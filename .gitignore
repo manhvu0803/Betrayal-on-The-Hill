@@ -46,3 +46,18 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+/.vscode
+/ProjectSettings/
+/UserSettings/
+
+# Assets
+/Assets/Deprecated/
+Deprecated.meta
+/Assets/ExampleAssets/
+ExampleAssets.meta
+/Assets/Plugins/
+Plugins.meta
+/Assets/Presets/
+Presets.meta
+
