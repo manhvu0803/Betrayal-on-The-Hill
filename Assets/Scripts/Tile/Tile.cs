@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public abstract class Tile : MonoBehaviour
+public class Tile : MonoBehaviour
 {
 	[SerializeField] private TileData data;
 

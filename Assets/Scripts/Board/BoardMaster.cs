@@ -17,8 +17,8 @@ public class BoardMaster : MonoBehaviour
 	public void Reset()
 	{
 		groundBoard.Reset();
-		//upperBoard.Reset();
-		//basementBoard.Reset();
+		upperBoard.Reset();
+		basementBoard.Reset();
 		tilePool.Reset();
 		Debug.Log("Reset");
 	}

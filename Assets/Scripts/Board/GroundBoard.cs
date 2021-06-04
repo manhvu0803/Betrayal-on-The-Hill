@@ -9,16 +9,18 @@ public class GroundBoard : Board
 
 	protected override void Start()
     {
+		if (entrance == null || foyer == null || staircase == null) throw new NoStartingTileException();
+
 		base.Start();
 		
 		playerPosition = new Vector2Int(width - 1, height / 2);
 
 		var pos = playerPosition;
-		SetStartTile(pos, entrance);
+		tiles[pos.x, pos.y] = entrance;
 		--pos.x;
-		SetStartTile(pos, foyer);
+		tiles[pos.x, pos.y] = foyer;
 		--pos.x;
-		SetStartTile(pos, staircase);
+		tiles[pos.x, pos.y] = staircase;
     }
 
 	public override void PutNewTile()

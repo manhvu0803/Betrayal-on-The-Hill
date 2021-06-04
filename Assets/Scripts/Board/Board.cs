@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
+	public class NoStartingTileException : System.Exception
+	{
+		public NoStartingTileException() { }
+		public NoStartingTileException(string message) : base(message) { }
+		public NoStartingTileException(string message, System.Exception inner) : base(message, inner) { }
+		protected NoStartingTileException(
+			System.Runtime.Serialization.SerializationInfo info,
+			System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+	}
+
 	protected TilePool tilePool;
 
 	protected TileData startTileData;
@@ -109,7 +119,7 @@ public class Board : MonoBehaviour
 
 	private void MoveTile(Tile tile, int[] surrounding)
 	{
-		tile.transform.position = CurrentPositionToWorld(tile.transform.position.y);
+		tile.transform.position = CurrentPositionToWorld();
 		tile.transform.Rotate(0, 0, NextValidAngle(tile, surrounding, 1));
 		tile.transform.parent = this.transform;
 		tiles[playerPosition.x, playerPosition.y] = tile;
@@ -117,18 +127,17 @@ public class Board : MonoBehaviour
 		this.currentSurrounding = surrounding;
 	}
 
-	protected void SetStartTile(Vector2Int pos, Tile tile)
-	{
-		tile.transform.localPosition = new Vector3(pos.x, 0, pos.y);
-		tiles[pos.x, pos.y] = tile;
-	}
-
-	public Vector3 CurrentPositionToWorld(float y = 0)
+	public Vector3 CurrentPositionToWorld(float y)
 	{
 		var trf = this.transform;
 		float x = playerPosition.x * trf.lossyScale.x + trf.position.x;
 		float z = playerPosition.y * trf.lossyScale.z + trf.position.z;
 		return new Vector3(x, y ,z);
+	}
+
+	public Vector3 CurrentPositionToWorld()
+	{
+		return CurrentPositionToWorld(this.transform.position.y);
 	}
 
 	private float NextValidAngle(Tile tile, int[] surrounding, int direction)

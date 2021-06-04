@@ -55,6 +55,7 @@ public class GameController : MonoBehaviour
 			allowRotate = true;
 			return;
 		}
+		Debug.Log(currentBoard.CurrentTile());
 	}
 
 	public void OnRotate(InputAction.CallbackContext context)

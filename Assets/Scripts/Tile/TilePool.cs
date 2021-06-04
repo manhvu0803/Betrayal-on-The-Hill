@@ -18,6 +18,11 @@ public class TilePool : MonoBehaviour
 			weight = w;
 			isUsed = false;
 		}
+
+		public override string ToString()
+		{
+			return $"{tile} used:{isUsed}";
+		}
 	}
 
 	private List<TileItem> tilePool;
@@ -56,8 +61,9 @@ public class TilePool : MonoBehaviour
 	public Tile GetTile()
 	{
 		int i = 0;
-		while (i <= tilePool.Count && !tilePool[i].isUsed) 
+		while (i <= tilePool.Count && tilePool[i].isUsed)
 			++i;
+
 		if (tilePool.Count <= i) {
 			Debug.Log("Out of tiles");
 			return null;
@@ -71,9 +77,9 @@ public class TilePool : MonoBehaviour
 	public Tile GetTile(Func<TileData.Location, bool> getter)
 	{
 		int i = 0;
-		while (i < tilePool.Count && tilePool[i].isUsed && getter(tilePool[i].tile.GetLocation()))
+		while (i < tilePool.Count && (tilePool[i].isUsed || !getter(tilePool[i].tile.GetLocation())))
 			++i;
-		
+
 		if (i >= tilePool.Count) {
 			Debug.Log($"Out of tiles for {getter.Target}");
 			return null;
