@@ -54,10 +54,19 @@ crashlytics-build.properties
 # Assets
 /Assets/Deprecated/
 Deprecated.meta
+
 /Assets/ExampleAssets/
 ExampleAssets.meta
+
 /Assets/Plugins/
 Plugins.meta
+
 /Assets/Presets/
 Presets.meta
 
+# Mirror
+/Assets/Mirror/
+Mirror.meta
+
+/Assets/ScriptTemplates/
+ScriptTemplates.meta
