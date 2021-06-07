@@ -52,8 +52,8 @@ crashlytics-build.properties
 /UserSettings/
 
 # Assets
-/Assets/Deprecated/
-Deprecated.meta
+*Deprecated/
+*Deprecated.meta
 
 /Assets/ExampleAssets/
 ExampleAssets.meta
