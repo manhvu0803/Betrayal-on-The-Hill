@@ -70,3 +70,6 @@ Mirror.meta
 
 /Assets/ScriptTemplates/
 ScriptTemplates.meta
+
+# Build
+/Builds/
