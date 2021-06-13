@@ -14,13 +14,7 @@ public class UpperBoard : Board
 		tiles[playerPosition.x, playerPosition.y] = landing;
 	}
 
-	public override void PutNewTile()
-	{
-		base.PutNewTile(GetUpper);
-	}
+	public override void PutNewTile() => base.PutNewTile(GetUpper);
 
-	private bool GetUpper(TileData.Location location)
-	{
-		return location.upper;
-	}
+	private bool GetUpper(TileData.Location location) => location.upper;
 }

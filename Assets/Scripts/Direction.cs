@@ -14,10 +14,7 @@ public struct Direction
 		west = w;
 	}
 
-	public Direction(Direction dir) : this(dir.north, dir.east, dir.south, dir.west)
-	{
-		return;
-	}
+	public Direction(Direction dir) : this(dir.north, dir.east, dir.south, dir.west) {}
 
 	public Direction AfterRotate(int rotation)
 	{
@@ -33,8 +30,5 @@ public struct Direction
 		return new Direction(dirs[0], dirs[1], dirs[2], dirs[3]);
 	}
 
-	public override string ToString()
-	{
-		return $"North:{north} East:{east} South:{south} West:{west}";
-	}
+	public override string ToString() => $"North:{north} East:{east} South:{south} West:{west}";
 }

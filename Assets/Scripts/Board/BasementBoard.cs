@@ -14,13 +14,7 @@ public class BasementBoard : Board
 		tiles[playerPosition.x, playerPosition.y] = landing;
 	}
 
-	public override void PutNewTile()
-	{
-		base.PutNewTile(GetBasement);
-	}
+	public override void PutNewTile() => base.PutNewTile(GetBasement);
 
-	private bool GetBasement(TileData.Location location)
-	{
-		return location.basement;
-	}
+	private bool GetBasement(TileData.Location location) => location.basement;
 }

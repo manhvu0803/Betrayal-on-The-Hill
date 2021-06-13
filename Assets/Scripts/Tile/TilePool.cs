@@ -19,10 +19,7 @@ public class TilePool : MonoBehaviour
 			isUsed = false;
 		}
 
-		public override string ToString()
-		{
-			return $"{tile} used:{isUsed}";
-		}
+		public override string ToString() => $"{tile} used:{isUsed}";
 	}
 
 	private List<TileItem> tilePool;

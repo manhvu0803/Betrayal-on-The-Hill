@@ -1,5 +1,6 @@
 using Mirror;
 using UnityEngine.UI;
+using UnityEngine;
 
 public class BetrayalRoomManager : NetworkRoomManager
 {
@@ -30,9 +31,6 @@ public class BetrayalRoomManager : NetworkRoomManager
 		base.OnRoomServerPlayersNotReady();
 		if (startButton != null) startButton.interactable = false;
 	}
-
-	public void OnGameStart()
-	{
-		ServerChangeScene(base.GameplayScene);
-	}
+	
+	public void OnGameStart() => ServerChangeScene(base.GameplayScene);
 }

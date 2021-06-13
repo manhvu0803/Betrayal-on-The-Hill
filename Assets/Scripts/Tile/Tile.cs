@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
@@ -15,21 +14,12 @@ public class Tile : MonoBehaviour
 	public virtual void OnEnter() {}
 	public virtual void OnExit() {}
 
-	public Direction GetDoors()
-	{
-		// Don't look at the rotation in the inspector. It's a lie :(
-		return new Direction(data.doors.AfterRotate((int)transform.rotation.eulerAngles.y));
-	}
+	// The rotation in the inspector is a lie :(
+	public Direction GetDoors() => new Direction(data.doors.AfterRotate((int)transform.rotation.eulerAngles.y));
 
-	public TileData.Location GetLocation()
-	{
-		return data.location;
-	}
+	public TileData.Location GetLocation() => data.location;
 
-	public bool IsStartingTile()
-	{
-		return data.isStartingTile;
-	}
+	public bool IsStartingTile() => data.isStartingTile;
 
 	public void SetData(Vector2Int pos, TileData tileData)
 	{
@@ -37,8 +27,5 @@ public class Tile : MonoBehaviour
 		transform.localPosition = new Vector3(pos.x, 0, pos.y);
 	}
 
-	public override string ToString()
-	{
-		return $"{name}__{data.tileName}";
-	}
+	public override string ToString() => $"{name}__{data.tileName}";
 }

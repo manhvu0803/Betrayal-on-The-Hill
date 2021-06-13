@@ -23,14 +23,8 @@ public class GroundBoard : Board
 		tiles[pos.x, pos.y] = staircase;
     }
 
-	public override void PutNewTile()
-	{
-		base.PutNewTile(GetGround);
-	}
+	public override void PutNewTile() => base.PutNewTile(GetGround);
 
-	private bool GetGround(TileData.Location location)
-	{
-		return location.ground;
-	}
+	private bool GetGround(TileData.Location location) => location.ground;
 	
 }

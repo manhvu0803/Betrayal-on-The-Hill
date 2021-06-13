@@ -16,10 +16,7 @@ public class TileData : ScriptableObject
 			basement = loc.basement;
 		}
 
-		public override string ToString()
-		{
-			return $"upper:{upper} ground:{ground} basement:{basement}";
-		}
+		public override string ToString() => $"u:{upper} g:{ground} b:{basement}";
 	}
 
 	[SerializeField] public string tileName;

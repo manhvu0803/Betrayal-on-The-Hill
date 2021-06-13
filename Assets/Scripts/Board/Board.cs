@@ -11,7 +11,8 @@ public class Board : MonoBehaviour
 		public NoStartingTileException(string message, System.Exception inner) : base(message, inner) { }
 		protected NoStartingTileException(
 			System.Runtime.Serialization.SerializationInfo info,
-			System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
+			System.Runtime.Serialization.StreamingContext context
+		) : base(info, context) { }
 	}
 
 	protected TilePool tilePool;
@@ -40,15 +41,9 @@ public class Board : MonoBehaviour
 		tilePool = GetComponentInParent<BoardMaster>().tilePool;
 	}
 
-	public Vector2Int CurrentPosition()
-	{
-		return playerPosition;
-	}
+	public Vector2Int CurrentPosition() => playerPosition;
 
-	public Tile CurrentTile()
-	{
-		return tiles[playerPosition.x, playerPosition.y];
-	}
+	public Tile CurrentTile() => tiles[playerPosition.x, playerPosition.y];
 
 	public void Reset()
 	{
@@ -90,10 +85,7 @@ public class Board : MonoBehaviour
 		this.playerPosition = pos;
 	}
 
-	public void Rotate(int direction)
-	{
-		CurrentTile().transform.Rotate(0, 0, NextValidAngle(CurrentTile(), this.currentSurrounding, direction));
-	}
+	public void Rotate(int direction) => CurrentTile().transform.Rotate(0, 0, NextValidAngle(CurrentTile(), this.currentSurrounding, direction));
 
 	public virtual void PutNewTile()
 	{
@@ -135,10 +127,7 @@ public class Board : MonoBehaviour
 		return new Vector3(x, y ,z);
 	}
 
-	public Vector3 CurrentPositionToWorld()
-	{
-		return CurrentPositionToWorld(this.transform.position.y);
-	}
+	public Vector3 CurrentPositionToWorld() => CurrentPositionToWorld(this.transform.position.y);
 
 	private float NextValidAngle(Tile tile, int[] surrounding, int direction)
 	{
