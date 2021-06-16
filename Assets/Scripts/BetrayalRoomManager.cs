@@ -1,35 +1,22 @@
 using Mirror;
 using UnityEngine.UI;
-using UnityEngine;
 
 public class BetrayalRoomManager : NetworkRoomManager
 {
-	private Button startButton;
+	public delegate void VoidEvent();
 
-	public override void OnRoomServerSceneChanged(string sceneName)
-	{
-		base.OnRoomServerSceneChanged(sceneName);
-		if (sceneName == base.RoomScene) {
-			foreach (var button in FindObjectsOfType<Button>()) {
-				if (button.name.ToLower() == "startbutton") {
-					startButton = button;
-					startButton.interactable = false;
-					startButton.onClick.AddListener(OnGameStart);
-					break;
-				}
-			}
-		}
-	}
+	public event VoidEvent OnReady;
+	public event VoidEvent OnNotReady;
 
 	public override void OnRoomServerPlayersReady()
 	{
-		if (startButton != null) startButton.interactable = true;
+		OnReady?.Invoke();
 	}
 
 	public override void OnRoomServerPlayersNotReady()
 	{
 		base.OnRoomServerPlayersNotReady();
-		if (startButton != null) startButton.interactable = false;
+		OnNotReady?.Invoke();
 	}
 	
 	public void OnGameStart() => ServerChangeScene(base.GameplayScene);
