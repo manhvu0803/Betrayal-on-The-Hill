@@ -22,7 +22,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "PutTiles",
+                    "name": "PutTile",
                     "type": "Button",
                     "id": "2abe506c-58ef-4c58-9749-c3134180fb84",
                     "expectedControlType": "Button",
@@ -101,7 +101,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "PutTiles",
+                    "action": "PutTile",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
