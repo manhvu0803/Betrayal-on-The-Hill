@@ -140,4 +140,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e337c2b0e51c7b54f8bb593c50704d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  data: {fileID: 11400000, guid: 8b334dbddadd16740a89a26d3b2b3113, type: 2}
+  tileName: Basement Landing
+  isStartingTile: 1
+  location:
+    upper: 0
+    ground: 0
+    basement: 1
+  doors:
+    north: 1
+    east: 1
+    south: 1
+    west: 1
+  texture: {fileID: 0}
