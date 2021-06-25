@@ -4,30 +4,62 @@ using UnityEngine;
 
 public class Board : MonoBehaviour
 {
-	public class NoStartingTileException : System.Exception
+	public struct Surrounding
 	{
-		public NoStartingTileException() { }
-		public NoStartingTileException(string message) : base(message) { }
-		public NoStartingTileException(string message, System.Exception inner) : base(message, inner) { }
-		protected NoStartingTileException(
-			System.Runtime.Serialization.SerializationInfo info,
-			System.Runtime.Serialization.StreamingContext context
-		) : base(info, context) { }
+		public enum State 
+		{ 
+			Door, Wall, Empty
+		}
+
+		public State north, east, south, west;
+
+		// C# doesn't allow parameterless constructor in struct, so only this is available
+		public Surrounding(State defaultState)
+		{
+			this.north = defaultState;
+			this.east  = defaultState;
+			this.south = defaultState;
+			this.west  = defaultState;
+		}
+
+		public Surrounding(State north, State east, State south, State west)
+		{
+			this.north = north;
+			this.east  = east;
+			this.south = south;
+			this.west  = west;
+		}
+
+		public override string ToString()
+		{
+			return $"n:{north} e:{east} s:{south} w:{west}";
+		}
 	}
-
-	protected TilePool tilePool;
-
-	protected TileData startTileData;
 
 	protected Tile[,] tiles;
 
-	[ReadOnlyField] [SerializeField] protected Vector2Int playerPosition;
+	public virtual Vector2Int StartingPosition
+	{
+		get;
+	}
 
-	private int[] currentSurrounding;
+	// A single lowercase character that represent the board 
+	// 'g' for Ground, 'b' for Basement, 'u' for Upper
+	public virtual char Signature
+	{
+		get => '0';
+	}
 
+	private Surrounding currentSurrounding;
+
+	#region Board size
 	[Header("Board size")]
 	[SerializeField] protected int width;
 	[SerializeField] protected int height;
+
+	public int Width { get => width; }
+	public int Height { get => height; }
+	#endregion
 
 	protected virtual void Start()
 	{
@@ -38,111 +70,84 @@ public class Board : MonoBehaviour
 	IEnumerator LateStart()
 	{
 		yield return new WaitForEndOfFrame();
-		tilePool = GetComponentInParent<BoardMaster>().tilePool;
 	}
-
-	public Vector2Int CurrentPosition() => playerPosition;
-
-	public Tile CurrentTile() => tiles[playerPosition.x, playerPosition.y];
 
 	public void Reset()
 	{
 		for (int i = 0; i < width; ++i) 
 			for (int j = 0; j < height; ++j)
-				if (tiles[i, j] != null && !tiles[i, j].IsStartingTile()) tiles[i, j] = null;
+				if (tiles[i, j]?.IsStartingTile() ?? false) tiles[i, j] = null;
 	}
 
-	protected int[] Surrounding()
+	public Surrounding GetSurrounding(Vector2Int pos)
 	{
-		int x = playerPosition.x, y = playerPosition.y;
-		var surrounding = new int[4] {-1, -1, -1, -1};
+		int x = pos.x, y = pos.y;
+		var srd = new Surrounding(Surrounding.State.Wall);
 
 		// Check north side
-		if (y >= height - 1 || tiles[x, y + 1] == null) surrounding[0] = 0;
-		else if (tiles[x, y + 1].GetDoors().south) surrounding[0] = 1;
+		if (y >= height - 1 || tiles[x, y + 1] == null) srd.north = Surrounding.State.Empty;
+		else if (tiles[x, y + 1].GetDoors().south) srd.north = Surrounding.State.Door;
 		// Check east side
-		if (x >= width - 1 || tiles[x + 1, y] == null) surrounding[1] = 0;
-		else if (tiles[x + 1, y].GetDoors().west) surrounding[1] = 1;
+		if (x >= width - 1 || tiles[x + 1, y] == null) srd.east = Surrounding.State.Empty;
+		else if (tiles[x + 1, y].GetDoors().west) srd.east = Surrounding.State.Door;
 		// Check south side
-		if (y <= 0 || tiles[x, y - 1] == null) surrounding[2] = 0;
-		else if (tiles[x, y - 1].GetDoors().north) surrounding[2] = 1;
+		if (y <= 0 || tiles[x, y - 1] == null) srd.south = Surrounding.State.Empty;
+		else if (tiles[x, y - 1].GetDoors().north) srd.south = Surrounding.State.Door;
 		// Check west side
-		if (x <= 0 || tiles[x - 1, y] == null) surrounding[3] = 0;
-		else if (tiles[x - 1, y].GetDoors().east) surrounding[3] = 1;
+		if (x <= 0 || tiles[x - 1, y] == null) srd.west = Surrounding.State.Empty;
+		else if (tiles[x - 1, y].GetDoors().east) srd.west = Surrounding.State.Door;
 
-		return surrounding;
+		return srd;
 	}
 
-	public void MovePlayer(Vector2Int movement)
+	public void Rotate(int direction) => tiles[0, 0].transform.Rotate(0, 0, NextValidRotation(tiles[0, 0], this.currentSurrounding, direction));
+
+	public virtual bool TileChooser(Tile.Location location) => true;
+
+	public Tile TileAt(int x, int y)
 	{
-		var pos = this.playerPosition;
-
-		if (tiles[pos.x, pos.y] != null) tiles[pos.x, pos.y].OnExit();
-		pos += movement;
-		pos.Clamp(new Vector2Int(0, 0), new Vector2Int(width - 1, height - 1));
-		if (tiles[pos.x, pos.y] != null) tiles[pos.x, pos.y].OnEnter();
-
-		this.playerPosition = pos;
+		return tiles[x, y];
 	}
 
-	public void Rotate(int direction) => CurrentTile().transform.Rotate(0, 0, NextValidAngle(CurrentTile(), this.currentSurrounding, direction));
-
-	public virtual void PutNewTile()
+	public Tile TileAt(Vector2Int pos)
 	{
-		var surrounding = Surrounding();
-		if (surrounding[0] != 1 && surrounding[1] != 1 && surrounding[2] != 1 && surrounding[3] != 1) return;
-		
-		var tile = tilePool.GetTile();
-		if (tile == null) return;
-
-		MoveTile(tile, surrounding);
+		return TileAt(pos.x, pos.y);
 	}
-	
-	protected void PutNewTile(Func<TileData.Location, bool> getter)
+
+	public void PutNewTile(Vector2Int pos, Tile newTile)
 	{
-		var surrounding = Surrounding();
-		if (surrounding[0] != 1 && surrounding[1] != 1 && surrounding[2] != 1 && surrounding[3] != 1) return;
-
-		var tile = tilePool.GetTile(getter);
-		if (tile == null) return;
-
-		MoveTile(tile, surrounding);
+		newTile.transform.parent = this.transform;
+		this.tiles[pos.x, pos.y] = newTile;
 	}
 
-	private void MoveTile(Tile tile, int[] surrounding)
-	{
-		tile.transform.position = CurrentPositionToWorld();
-		tile.transform.Rotate(0, 0, NextValidAngle(tile, surrounding, 1));
-		tile.transform.parent = this.transform;
-		tiles[playerPosition.x, playerPosition.y] = tile;
-		tile.OnDiscover();
-		this.currentSurrounding = surrounding;
-	}
-
-	public Vector3 CurrentPositionToWorld(float y)
+	public Vector3 BoardPositionToWorld(Vector2Int pos, float y)
 	{
 		var trf = this.transform;
-		float x = playerPosition.x * trf.lossyScale.x + trf.position.x;
-		float z = playerPosition.y * trf.lossyScale.z + trf.position.z;
+		float x = pos.x * trf.lossyScale.x + trf.position.x;
+		float z = pos.y * trf.lossyScale.z + trf.position.z;
 		return new Vector3(x, y ,z);
 	}
 
-	public Vector3 CurrentPositionToWorld() => CurrentPositionToWorld(this.transform.position.y);
+	public Vector3 BoardPositionToWorld(Vector2Int pos) => BoardPositionToWorld(pos, this.transform.position.y);
 
-	private float NextValidAngle(Tile tile, int[] surrounding, int direction)
+	static public float NextValidRotation(Tile tile, Surrounding srd, int direction)
 	{
 		int maxDoor = -1;
 		int angle = 0;
 		var doors = tile.GetDoors();
 		
+		if (direction >= 0) direction = 1;
+		else direction = -1;
+		
 		for (int i = 0; i < 4; ++i) {
+			Debug.Log(doors);
 			int cnt = 0;
-			if ((doors.north && surrounding[0] == 1) || (!doors.north && surrounding[0] == -1)) ++cnt;
-			if ((doors.east  && surrounding[1] == 1) || (!doors.east  && surrounding[1] == -1)) ++cnt;
-			if ((doors.south && surrounding[2] == 1) || (!doors.south && surrounding[2] == -1)) ++cnt;
-			if ((doors.west  && surrounding[3] == 1) || (!doors.west  && surrounding[3] == -1)) ++cnt;
+			if ((doors.north && srd.north == Surrounding.State.Door) || (!doors.north && srd.north == Surrounding.State.Wall)) ++cnt;
+			if ((doors.east  && srd.east  == Surrounding.State.Door) || (!doors.east  && srd.east  == Surrounding.State.Wall)) ++cnt;
+			if ((doors.south && srd.south == Surrounding.State.Door) || (!doors.south && srd.south == Surrounding.State.Wall)) ++cnt;
+			if ((doors.west  && srd.west  == Surrounding.State.Door) || (!doors.west  && srd.west  == Surrounding.State.Wall)) ++cnt;
 
-			// Including equal doors count to find the next rotation
+			// Including equal doors count to find the next	valid rotation
 			if (maxDoor <= cnt) {
 				maxDoor = cnt;
 				// This rotate direction is the opposite of transform.eulerAngles.y, which hold the real rotation

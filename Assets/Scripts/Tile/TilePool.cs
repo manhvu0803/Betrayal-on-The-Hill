@@ -1,6 +1,11 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
+
+#if UNITY_EDITOR
+using UnityEditor.SceneManagement;
+#endif
 
 public class TilePool : MonoBehaviour
 {
@@ -10,79 +15,83 @@ public class TilePool : MonoBehaviour
 
 		public float weight;
 
-		public bool isUsed;
+		public bool used;
 
 		public TileItem(Tile obj, float w = 0)
 		{
 			tile = obj;
 			weight = w;
-			isUsed = false;
+			used = false;
 		}
 
-		public override string ToString() => $"{tile} used:{isUsed}";
+		public override string ToString() => $"{tile} used:{used}";
 	}
 
+	private const string tileDir = "TilePrefabs/";
+
 	private List<TileItem> tilePool;
+
+	[SerializeField] private List<Tile> tileList;
 
 	private void Start()
 	{
 		tilePool = new List<TileItem>();
 		
-		List<Tile> tileList = new List<Tile>(GetComponentsInChildren<Tile>());
 		foreach (var tile in tileList) {
-			tile.gameObject.SetActive(false);
+			NetworkClient.RegisterPrefab(tile.gameObject);
 			tilePool.Add(new TileItem(tile, UnityEngine.Random.Range(0, 50)));
 		}
 		tilePool.Sort((a, b) => a.weight.CompareTo(b.weight));
 	}
 
-	/*
-	[ContextMenu("Get tile data")]
+	[ContextMenu("Get tile prefabs from Resources")]
 	private void GetTileDataResources()
 	{
-		tileList = new List<TileData>(Resources.LoadAll<TileData>("MapTiles/"));
-		Debug.Log($"Get {tileList.Count} tiles' data in Resources");
+		#if UNITY_EDITOR
+		EditorSceneManager.MarkSceneDirty(EditorSceneManager.GetActiveScene());
+		#endif
+
+		tileList = new List<Tile>(Resources.LoadAll<Tile>(tileDir));
+		Debug.Log($"Loaded {tileList.Count} tiles in Resources/{tileDir}");
 	}
-	*/
 
 	public void Reset()
 	{
 		foreach (var item in tilePool) {
 			item.tile.gameObject.SetActive(false);
-			item.isUsed = false;
+			item.used = false;
 			item.weight = UnityEngine.Random.Range(0, 50);
 		}
 		tilePool.Sort((a, b) => a.weight.CompareTo(b.weight));
 	}
 
-	public Tile GetTile()
+	public Tile GetRandomTile()
 	{
 		int i = 0;
-		while (i <= tilePool.Count && tilePool[i].isUsed)
+		while (i < tilePool.Count && tilePool[i].used)
 			++i;
 
 		if (tilePool.Count <= i) {
 			Debug.Log("Out of tiles");
 			return null;
 		}
-		
-		tilePool[i].isUsed = true;
+		tilePool[i].used = true;
 		tilePool[i].tile.gameObject.SetActive(true);
 		return tilePool[i].tile;
 	}
 
-	public Tile GetTile(Func<TileData.Location, bool> getter)
+	public Tile GetRandomTile(Func<Tile.Location, bool> chooser)
 	{
 		int i = 0;
-		while (i < tilePool.Count && (tilePool[i].isUsed || !getter(tilePool[i].tile.GetLocation())))
+		while (i < tilePool.Count && (tilePool[i].used || !chooser(tilePool[i].tile.GetLocation())))
 			++i;
 
 		if (i >= tilePool.Count) {
-			Debug.Log($"Out of tiles for {getter.Target}");
+			Debug.Log($"Out of tiles for {chooser.Target}");
 			return null;
 		}
 
-		tilePool[i].isUsed = true;
+		tilePool[i].used = true;
 		tilePool[i].tile.gameObject.SetActive(true);
 		return tilePool[i].tile;
 	}
