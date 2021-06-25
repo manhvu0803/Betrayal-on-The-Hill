@@ -7,7 +7,7 @@ public class StartButton : NetworkBehaviour
     void Start()
     {
         if (!this.isServer) return;
-		var roomManager = GameObject.FindObjectOfType<BetrayalRoomManager>();
+		var roomManager = GameObject.FindObjectOfType<RoomManager>();
 		var button = GetComponent<Button>();
 		
 		button.interactable = false;
