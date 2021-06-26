@@ -1,5 +1,6 @@
 using Mirror;
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 using SurState = Board.Surrounding.State;
@@ -15,14 +16,19 @@ public class GameManager : NetworkBehaviour
 	[SerializeField] private Board upperBoard;
 	[SerializeField] private Board basementBoard;
 
-	private List<NetworkPlayer> players;
+	[ReadOnlyField] [SerializeField] private List<NetworkPlayer> players;
 
 	public void Start()
 	{
 		if (tilePool == null) throw new System.NullReferenceException("tilePool is null");
+		StartCoroutine(LateStart());
+	}
 
+	IEnumerator LateStart()
+	{
+		yield return null;
+		
 		players = new List<NetworkPlayer>(GameObject.FindObjectsOfType<NetworkPlayer>());
-
 		foreach (var player in players) {
 			player.currentBoard = groundBoard;
 			player.position = groundBoard.StartingPosition;
@@ -41,12 +47,12 @@ public class GameManager : NetworkBehaviour
 
 		var surrounding = board.GetSurrounding(pos);
 		if (surrounding.north != SurState.Door 
-			&& surrounding.east  != SurState.Door 
-			&& surrounding.south != SurState.Door 
-			&& surrounding.west  != SurState.Door) {
-				Debug.Log("No doors");
-				return;
-			}
+		 && surrounding.east  != SurState.Door 
+		 && surrounding.south != SurState.Door 
+		 && surrounding.west  != SurState.Door) {
+			Debug.Log("No doors");
+			return;
+		}
 
 		var tile = tilePool.GetRandomTile(board.TileChooser);
 		if (tile == null) return;
@@ -63,28 +69,22 @@ public class GameManager : NetworkBehaviour
 		newTile.OnDiscover();
 	}
 
-	public void SwitchBoard(NetworkPlayer player, char boardSignature)
-	{
-		player.currentBoard = GetBoardBySignature(boardSignature);
-		RpcSwitchBoard(player.netId, boardSignature);
-	}
-
 	[ClientRpc(includeOwner = false)]
 	void RpcPutTile(GameObject newTileObject, Vector2Int pos, char boardSignature)
 	{
 		if (!this.isClientOnly) return;
 		var newTile = newTileObject.GetComponent<Tile>();
-		newTile.Initialize(tileMeshPrefab);
 		GetBoardBySignature(boardSignature).PutNewTile(pos, newTile);
+		newTile.Initialize(tileMeshPrefab, pos, 0);
 	}
 
-	[ClientRpc]
-	void RpcSwitchBoard(uint playerId, char boardSignature)
+	public void SwitchBoard(NetworkPlayer player, char boardSignature)
 	{
-		GetPlayerByNetId(playerId).currentBoard = GetBoardBySignature(boardSignature);
+		player.currentBoard = GetBoardBySignature(boardSignature);
+		player.RpcSwitchBoard(boardSignature);
 	}
 
-	private Board GetBoardBySignature(char signature)
+	public Board GetBoardBySignature(char signature)
 	{
 		switch (signature)
 		{
@@ -93,12 +93,5 @@ public class GameManager : NetworkBehaviour
 			case 'u': return upperBoard;
 			default: throw new System.ArgumentException($"No board of '{signature}' signature");
 		}
-	}
-
-	private NetworkPlayer GetPlayerByNetId(uint netId)
-	{
-		foreach (var player in players)
-			if (player.netId == netId) return player;
-		return null;
 	}
 }

@@ -40,22 +40,18 @@ public class Tile : MonoBehaviour
 
 	public bool IsStartingTile() => isStartingTile;
 
-	public void Initialize(GameObject meshPrefab)
+	public void Initialize(GameObject meshPrefab, Vector2Int pos, float rotation)
 	{
 		var newMesh = Instantiate(meshPrefab);
-		newMesh.transform.parent = this.transform;
 		
 		// Set the mesh transform to properly follow its tile object
+		newMesh.transform.parent = this.transform;
 		newMesh.transform.localPosition = Vector3.zero;
 		newMesh.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-		newMesh.GetComponent<MeshRenderer>().material.mainTexture = texture;	
-	}
-
-	public void Initialize(GameObject meshPrefab, Vector2Int pos, float rotation)
-	{
-		Initialize(meshPrefab);
-		this.name = $"Tile-{pos.x}_{pos.y}_{tileName}";
+		newMesh.GetComponent<MeshRenderer>().material.mainTexture = texture;
+		
+		this.name = $"Tile_{pos.x}_{pos.y}_{tileName}";
 		this.transform.localPosition = new Vector3(pos.x, 0, pos.y);
 		this.transform.Rotate(0, 0, rotation);
 	}
