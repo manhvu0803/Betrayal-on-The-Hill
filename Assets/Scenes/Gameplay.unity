@@ -201,7 +201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &28711264
 Transform:
   m_ObjectHideFlags: 0
@@ -1065,6 +1065,7 @@ MonoBehaviour:
   groundBoard: {fileID: 581876262}
   upperBoard: {fileID: 1366769563}
   basementBoard: {fileID: 28711266}
+  players: []
 --- !u!114 &699283099 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6485922878561386309, guid: 5bf35c26fb253e64ea48aa151ab07357, type: 3}
@@ -1594,7 +1595,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1366769562
 Transform:
   m_ObjectHideFlags: 0

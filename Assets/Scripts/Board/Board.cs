@@ -61,16 +61,10 @@ public class Board : MonoBehaviour
 	public int Height { get => height; }
 	#endregion
 
-	protected virtual void Start()
+	protected virtual void Awake()
 	{
 		tiles = new Tile[width, height];
-		StartCoroutine(LateStart());
     }
-
-	IEnumerator LateStart()
-	{
-		yield return new WaitForEndOfFrame();
-	}
 
 	public void Reset()
 	{
@@ -104,15 +98,9 @@ public class Board : MonoBehaviour
 
 	public virtual bool TileChooser(Tile.Location location) => true;
 
-	public Tile TileAt(int x, int y)
-	{
-		return tiles[x, y];
-	}
+	public Tile TileAt(int x, int y) => tiles[x, y];
 
-	public Tile TileAt(Vector2Int pos)
-	{
-		return TileAt(pos.x, pos.y);
-	}
+	public Tile TileAt(Vector2Int pos) => TileAt(pos.x, pos.y);
 
 	public void PutNewTile(Vector2Int pos, Tile newTile)
 	{
@@ -140,7 +128,6 @@ public class Board : MonoBehaviour
 		else direction = -1;
 		
 		for (int i = 0; i < 4; ++i) {
-			Debug.Log(doors);
 			int cnt = 0;
 			if ((doors.north && srd.north == Surrounding.State.Door) || (!doors.north && srd.north == Surrounding.State.Wall)) ++cnt;
 			if ((doors.east  && srd.east  == Surrounding.State.Door) || (!doors.east  && srd.east  == Surrounding.State.Wall)) ++cnt;

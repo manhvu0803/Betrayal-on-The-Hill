@@ -6,11 +6,11 @@ public class BasementBoard : Board
 
 	public override Vector2Int StartingPosition => new Vector2Int(width / 2, height / 2);
 
-	protected override void Start()
+	protected override void Awake()
 	{
 		if (landing == null) throw new System.NullReferenceException("Null basement landing");
 		
-		base.Start();
+		base.Awake();
 
 		var pos = StartingPosition;
 		tiles[pos.x, pos.y] = landing;

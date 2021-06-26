@@ -9,12 +9,12 @@ public class GroundBoard : Board
 
 	public override Vector2Int StartingPosition => new Vector2Int(width - 1, height / 2);
 
-	protected override void Start()
+	protected override void Awake()
     {
 		if (entrance == null || foyer == null || staircase == null) 
 			throw new System.NullReferenceException("Null starting tiles");
 
-		base.Start();
+		base.Awake();
 		
 		var pos = StartingPosition;
 		tiles[pos.x, pos.y] = entrance;
