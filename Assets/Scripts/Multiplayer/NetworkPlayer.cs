@@ -46,7 +46,11 @@ public class NetworkPlayer : NetworkBehaviour
 	void SwitchBoard(Board board) => CmdSwitchBoard(board.Signature);
 
 	[Command]
-	void CmdSwitchBoard(char boardSignature) => gameManager.SwitchBoard(this, boardSignature);
+	void CmdSwitchBoard(char boardSignature)
+	{
+		this.currentBoard = gameManager.GetBoardBySignature(boardSignature);
+		this.RpcSwitchBoard(boardSignature);
+	}
 
 	[ClientRpc]
 	public void RpcSwitchBoard(char boardSignature) => this.currentBoard = gameManager.GetBoardBySignature(boardSignature);

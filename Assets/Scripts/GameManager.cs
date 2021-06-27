@@ -18,23 +18,31 @@ public class GameManager : NetworkBehaviour
 
 	[ReadOnlyField] [SerializeField] private List<NetworkPlayer> players;
 
-	public void Start()
+	public override void OnStartServer()
 	{
+		base.OnStartServer();
 		if (tilePool == null) throw new System.NullReferenceException("tilePool is null");
-		StartCoroutine(LateStart());
+		StartCoroutine(GetPlayers(GameObject.FindObjectOfType<NetworkRoomManager>().numPlayers));
 	}
 
-	IEnumerator LateStart()
+	IEnumerator GetPlayers(int playerCount)
 	{
-		yield return null;
-		
-		players = new List<NetworkPlayer>(GameObject.FindObjectsOfType<NetworkPlayer>());
+		// Polling every 2 frames until found all player object
+		// Since the build keep failing to find remote player
+		while (players.Count < playerCount) {
+			yield return null;
+			yield return null;
+			players = new List<NetworkPlayer>(GameObject.FindObjectsOfType<NetworkPlayer>());
+		}
+
 		foreach (var player in players) {
+			Debug.Log(player);
 			player.currentBoard = groundBoard;
 			player.position = groundBoard.StartingPosition;
 		}
 	}
 	
+	[Server]
 	public void RequestTile(NetworkPlayer player)
 	{
 		var board = player.currentBoard;
@@ -76,12 +84,6 @@ public class GameManager : NetworkBehaviour
 		var newTile = newTileObject.GetComponent<Tile>();
 		GetBoardBySignature(boardSignature).PutNewTile(pos, newTile);
 		newTile.Initialize(tileMeshPrefab, pos, 0);
-	}
-
-	public void SwitchBoard(NetworkPlayer player, char boardSignature)
-	{
-		player.currentBoard = GetBoardBySignature(boardSignature);
-		player.RpcSwitchBoard(boardSignature);
 	}
 
 	public Board GetBoardBySignature(char signature)
