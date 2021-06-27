@@ -36,6 +36,8 @@ public class LocalController : MonoBehaviour
 
     void Start()
 	{
+		upperBoard.gameObject.SetActive(false);
+		basementBoard.gameObject.SetActive(false);
 		SwitchBoard(groundBoard);
     }
 
@@ -47,8 +49,9 @@ public class LocalController : MonoBehaviour
 			allowRotate = false;
 			cursorPosition += movement;
 			cursorPosition.Clamp(Vector2Int.zero, currentBoardSize);
-			moveEvent?.Invoke(cursorPosition);
+			
 			MoveHighlighter();
+			moveEvent?.Invoke(cursorPosition);
 		}
 	}
 
@@ -82,14 +85,15 @@ public class LocalController : MonoBehaviour
 	{
 		if (board == currentBoard) return;
 
-		switchBoardEvent?.Invoke(board);
 		currentBoard?.gameObject.SetActive(false);
 		currentBoard = board;
 		currentBoard.gameObject.SetActive(true);
+		
 		currentBoardSize = new Vector2Int(board.Width - 1, board.Height - 1);
 		cursorPosition = board.StartingPosition;
 		
 		MoveHighlighter();
+		switchBoardEvent?.Invoke(board);
 	}
 
 	private void MoveHighlighter() => StartCoroutine(MoveAtFrameEnd());
