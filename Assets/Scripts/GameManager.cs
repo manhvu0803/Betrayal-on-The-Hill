@@ -1,7 +1,6 @@
 using Mirror;
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 using SurState = Board.Surrounding.State;
 
@@ -16,7 +15,7 @@ public class GameManager : NetworkBehaviour
 	[SerializeField] private Board upperBoard;
 	[SerializeField] private Board basementBoard;
 
-	[ReadOnlyField] [SerializeField] private List<NetworkPlayer> players;
+	[ReadOnlyField] [SerializeField] private NetworkPlayer[] players;
 
 	public override void OnStartServer()
 	{
@@ -25,18 +24,19 @@ public class GameManager : NetworkBehaviour
 		StartCoroutine(GetPlayers(GameObject.FindObjectOfType<NetworkRoomManager>().numPlayers));
 	}
 
+	[Server]
 	IEnumerator GetPlayers(int playerCount)
 	{
 		// Polling every 2 frames until found all player object
 		// Since the build keep failing to find remote player
-		while (players.Count < playerCount) {
+		do {
 			yield return null;
 			yield return null;
-			players = new List<NetworkPlayer>(GameObject.FindObjectsOfType<NetworkPlayer>());
+			players = GameObject.FindObjectsOfType<NetworkPlayer>();
 		}
+		while (players.Length < playerCount);
 
 		foreach (var player in players) {
-			Debug.Log(player);
 			player.currentBoard = groundBoard;
 			player.position = groundBoard.StartingPosition;
 		}
