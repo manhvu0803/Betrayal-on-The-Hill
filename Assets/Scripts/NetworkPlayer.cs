@@ -7,19 +7,23 @@ public class NetworkPlayer : NetworkBehaviour
 
 	private LocalController localController;
 
+	[SyncVar(hook = nameof(ChangePlayerName))] public string playerName;
+
 	[ReadOnlyField] public Board currentBoard;
 
 	[ReadOnlyField] [SyncVar] public Vector2Int position;
 
+#if UNITY_EDITOR
 	private new MeshRenderer renderer;
+#else
+	private MeshRenderer renderer;
+#endif
 
 	void Start()
 	{
 		gameManager = GameObject.FindObjectOfType<GameManager>();
 
 		renderer = GetComponent<MeshRenderer>();
-
-		this.gameObject.name = (this.isLocalPlayer)? "LocalPlayer" : "RemotePlayer";
 
 		if (this.isLocalPlayer) LocalPlayerSetUp();
 	}
@@ -54,4 +58,10 @@ public class NetworkPlayer : NetworkBehaviour
 
 	[ClientRpc]
 	public void RpcSwitchBoard(char boardSignature) => this.currentBoard = gameManager.GetBoardBySignature(boardSignature);
+
+	void ChangePlayerName(string oldName, string newName)
+	{
+		Debug.Log($"Player {oldName} change to {newName}");
+		this.gameObject.name = $"{newName}_{((this.isLocalPlayer)? "Local" : "Remote")}";
+	}
 }

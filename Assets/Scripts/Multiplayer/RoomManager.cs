@@ -1,16 +1,20 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class RoomManager : NetworkRoomManager
 {
 	[Header("Player settings")]
 	[SerializeField] private string playerName;
 
-	public delegate void VoidEvent();
+	public event Action OnReady;
+	public event Action OnNotReady;
 
-	public event VoidEvent OnReady;
-	public event VoidEvent OnNotReady;
+	private new void Start()
+	{
+		playerName = PlayerPrefs.GetString("playerName");
+	}
 
 	public override void OnStartClient()
 	{
@@ -34,8 +38,14 @@ public class RoomManager : NetworkRoomManager
 		base.OnRoomServerPlayersNotReady();
 		OnNotReady?.Invoke();
 	}
+
+	public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection connection, GameObject roomPlayer, GameObject gamePlayer)
+	{
+		gamePlayer.GetComponent<NetworkPlayer>().playerName = playerName;
+		return true;
+	}
 	
-	public void OnGameStart() => ServerChangeScene(base.GameplayScene);
+	public void OnGameStart() => base.OnRoomServerPlayersReady();
 
 	public void OnPlayerNameChanged(InputField nameField)
 	{
