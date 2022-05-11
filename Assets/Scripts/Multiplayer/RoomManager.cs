@@ -39,11 +39,11 @@ public class RoomManager : NetworkRoomManager
 		OnNotReady?.Invoke();
 	}
 
-	public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection connection, GameObject roomPlayer, GameObject gamePlayer)
-	{
-		gamePlayer.GetComponent<NetworkPlayer>().playerName = playerName;
-		return true;
-	}
+	// public override bool OnRoomServerSceneLoadedForPlayer(NetworkConnection connection, GameObject roomPlayer, GameObject gamePlayer)
+	// {
+	// 	gamePlayer.GetComponent<NetworkPlayer>().playerName = playerName;
+	// 	return true;
+	// }
 	
 	public void OnGameStart() => base.OnRoomServerPlayersReady();
 

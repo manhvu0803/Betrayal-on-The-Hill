@@ -94,7 +94,11 @@ public class Board : MonoBehaviour
 		return srd;
 	}
 
-	public void Rotate(int direction) => tiles[0, 0].transform.Rotate(0, 0, NextValidRotation(tiles[0, 0], this.currentSurrounding, direction));
+	public void Rotate(int direction) 
+	{
+		float nextRotation = NextValidRotation(tiles[0, 0], this.currentSurrounding, direction);
+		tiles[0, 0].transform.Rotate(0, 0, nextRotation);
+	}
 
 	public virtual bool TileChooser(Tile.Location location) => true;
 
