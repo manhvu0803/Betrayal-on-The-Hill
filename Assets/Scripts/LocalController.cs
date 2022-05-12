@@ -43,21 +43,6 @@ public class LocalController : MonoBehaviour
 
 	void Update()
 	{
-		lastMoveTime += Time.deltaTime;
-		if (movement != Vector2Int.zero && lastMoveTime >= moveDelay) {
-			lastMoveTime = 0;
-			allowRotate = false;
-			cursorPosition += movement;
-			cursorPosition.Clamp(Vector2Int.zero, currentBoardSize);
-			
-			MoveHighlighter();
-			moveEvent?.Invoke(cursorPosition);
-		}
-	}
-
-	public void OnMove(InputValue value)
-	{
-		movement = Vector2Int.RoundToInt(value.Get<Vector2>());
 	}
 
 	public void OnPutTile()
@@ -69,7 +54,6 @@ public class LocalController : MonoBehaviour
 	public void OnRotate(InputValue value)
 	{
 		if (!allowRotate) return;
-		//currentBoard.Rotate((int)context.ReadValue<float>());
 	}
 
 	public void OnReset()
@@ -77,8 +61,8 @@ public class LocalController : MonoBehaviour
 		Debug.Log("Reset game");
 	}
 
-	public void OnSwitchGround() 	=> SwitchBoard(groundBoard);
-	public void OnSwitchUpper() 	=> SwitchBoard(upperBoard);
+	public void OnSwitchGround() => SwitchBoard(groundBoard);
+	public void OnSwitchUpper() => SwitchBoard(upperBoard);
 	public void OnSwitchBasement() 	=> SwitchBoard(basementBoard);
 
 	private void SwitchBoard(Board board)
@@ -92,16 +76,6 @@ public class LocalController : MonoBehaviour
 		currentBoardSize = new Vector2Int(board.Width - 1, board.Height - 1);
 		cursorPosition = board.StartingPosition;
 		
-		MoveHighlighter();
 		switchBoardEvent?.Invoke(board);
-	}
-
-	private void MoveHighlighter() => StartCoroutine(MoveAtFrameEnd());
-	
-	IEnumerator MoveAtFrameEnd()
-	{
-		yield return new WaitForEndOfFrame();
-		var transf = highlighter.transform;
-		transf.position = currentBoard.BoardPositionToWorld(cursorPosition, transf.position.y);
 	}
 }

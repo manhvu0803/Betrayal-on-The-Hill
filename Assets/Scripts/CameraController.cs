@@ -7,6 +7,9 @@ public class CameraController : MonoBehaviour
 	private Camera _camera;
 
 	[SerializeField]
+	private Transform _highlighter;
+
+	[SerializeField]
 	private float _moveDampRatio = 10;
 
 	private bool _isMoving = false;
@@ -42,13 +45,16 @@ public class CameraController : MonoBehaviour
 		Vector2 mousePosition = Mouse.current.position.ReadValue();
 		Ray ray = _camera.ScreenPointToRay(mousePosition);
 
-		Debug.Log(_camera.ScreenToWorldPoint(mousePosition));
-
 		if (Physics.Raycast(ray, out RaycastHit hit))
 		{
-			Transform hitObject = hit.transform;
-			Debug.Log(hitObject);
-		}	}
+			// The raycast will hit the board mesh, which is a seperate GameObject, so we need to get its parent
+			Board hitBoard = hit.transform.parent.GetComponent<Board>();
+			Vector2Int boardPosition = hitBoard.GetTileFromWorldPoint(hit.point);
+			Debug.Log($"{hitBoard}: {boardPosition}");
+			_highlighter.transform.position = hitBoard.BoardPositionToWorld(boardPosition);
+		}	
+	}
+
 
 	private void FixedUpdate() 
 	{

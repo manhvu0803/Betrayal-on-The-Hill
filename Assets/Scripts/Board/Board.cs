@@ -1,8 +1,9 @@
 using System;
 using System.Collections;
+
 using UnityEngine;
 
-public class Board : MonoBehaviour
+public abstract class Board : MonoBehaviour
 {
 	public struct Surrounding
 	{
@@ -45,10 +46,7 @@ public class Board : MonoBehaviour
 
 	// A single lowercase character that represent the board 
 	// 'g' for Ground, 'b' for Basement, 'u' for Upper
-	public virtual char Signature
-	{
-		get => '0';
-	}
+	public abstract char Signature { get; }
 
 	private Surrounding currentSurrounding;
 
@@ -115,6 +113,8 @@ public class Board : MonoBehaviour
 	public Vector3 BoardPositionToWorld(Vector2Int pos, float y)
 	{
 		var trf = this.transform;
+		// The coordinate start from middle but the square start from edge,d
+		// so we need to add 0.5 for x
 		float x = pos.x * trf.lossyScale.x + trf.position.x;
 		float z = pos.y * trf.lossyScale.z + trf.position.z;
 		return new Vector3(x, y ,z);
@@ -149,5 +149,19 @@ public class Board : MonoBehaviour
 		}
 
 		return angle;
+	}
+
+	public Vector2Int GetTileFromWorldPoint(Vector3 point) 
+	{
+		Vector3 localPoint = this.transform.InverseTransformPoint(point);
+		Debug.Log($"local: {localPoint}");
+		return GetTileFromLocalPoint(point);
+	}
+
+	private Vector2Int GetTileFromLocalPoint(Vector3 point) 
+	{
+		int x = (int)Math.Round(point.x);
+		int y = (int)Math.Round(point.z);
+		return new Vector2Int(x, y);
 	}
 }
