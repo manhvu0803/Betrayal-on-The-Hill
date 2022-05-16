@@ -113,8 +113,6 @@ public abstract class Board : MonoBehaviour
 	public Vector3 BoardPositionToWorld(Vector2Int pos, float y)
 	{
 		var trf = this.transform;
-		// The coordinate start from middle but the square start from edge,d
-		// so we need to add 0.5 for x
 		float x = pos.x * trf.lossyScale.x + trf.position.x;
 		float z = pos.y * trf.lossyScale.z + trf.position.z;
 		return new Vector3(x, y ,z);
@@ -154,7 +152,6 @@ public abstract class Board : MonoBehaviour
 	public Vector2Int GetTileFromWorldPoint(Vector3 point) 
 	{
 		Vector3 localPoint = this.transform.InverseTransformPoint(point);
-		Debug.Log($"local: {localPoint}");
 		return GetTileFromLocalPoint(point);
 	}
 

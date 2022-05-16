@@ -3,11 +3,16 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 
+[RequireComponent(typeof(PlayerInput))]
 public class LocalController : MonoBehaviour
 {
-	[SerializeField] private double moveDelay;
-	
-	[SerializeField] GameObject highlighter;
+	[SerializeField]
+	private Camera _camera;
+
+	[SerializeField]
+	Transform _highlighter;
+
+	private PlayerInput _playerInput;
 
 	#region Boards
 	[Header("Boards")]
@@ -17,49 +22,20 @@ public class LocalController : MonoBehaviour
 	#endregion
 
 	#region Events
-	public event Action putTileEvent;
-	public event Action<Vector2Int> moveEvent;
 	public event Action<Board> switchBoardEvent;
 	#endregion
 
 	private Board currentBoard;
-
-	private Vector2Int currentBoardSize;
-
-	private Vector2Int cursorPosition;
-
-	private Vector2Int movement;
-
-	private bool allowRotate = false;
-
-	private double lastMoveTime = 0;
 
     void Start()
 	{
 		upperBoard.gameObject.SetActive(false);
 		basementBoard.gameObject.SetActive(false);
 		SwitchBoard(groundBoard);
+
+		_playerInput = this.GetComponent<PlayerInput>();
+		_playerInput.actions["SelectTile"].performed += OnSelectTile;
     }
-
-	void Update()
-	{
-	}
-
-	public void OnPutTile()
-	{
-		Debug.Log("OnPutTile");
-		putTileEvent?.Invoke();
-	}
-
-	public void OnRotate(InputValue value)
-	{
-		if (!allowRotate) return;
-	}
-
-	public void OnReset()
-	{
-		Debug.Log("Reset game");
-	}
 
 	public void OnSwitchGround() => SwitchBoard(groundBoard);
 	public void OnSwitchUpper() => SwitchBoard(upperBoard);
@@ -73,9 +49,20 @@ public class LocalController : MonoBehaviour
 		currentBoard = board;
 		currentBoard.gameObject.SetActive(true);
 		
-		currentBoardSize = new Vector2Int(board.Width - 1, board.Height - 1);
-		cursorPosition = board.StartingPosition;
-		
 		switchBoardEvent?.Invoke(board);
+	}
+	
+	public void OnSelectTile(InputAction.CallbackContext context) 
+	{
+		Vector2 mousePosition = Mouse.current.position.ReadValue();
+		Ray ray = _camera.ScreenPointToRay(mousePosition);
+
+		if (Physics.Raycast(ray, out RaycastHit hit))
+		{
+			// The raycast will hit the board mesh, which is a seperate GameObject, so we need to get its parent
+			Board hitBoard = hit.transform.parent.GetComponent<Board>();
+			Vector2Int boardPosition = hitBoard.GetTileFromWorldPoint(hit.point);
+			_highlighter.transform.position = hitBoard.BoardPositionToWorld(boardPosition);
+		}	
 	}
 }

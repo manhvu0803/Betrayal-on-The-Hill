@@ -36,8 +36,6 @@ public class NetworkPlayer : NetworkBehaviour
 	void LocalPlayerSetUp()
 	{
 		localController = GameObject.FindObjectOfType<LocalController>();
-		localController.putTileEvent += CmdPutTile;
-		localController.moveEvent += CmdMove;
 		localController.switchBoardEvent += SwitchBoard;
 	}
 

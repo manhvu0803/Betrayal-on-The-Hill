@@ -42,7 +42,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Click",
+                    "name": "SelectTile",
                     "type": "Button",
                     "id": "37fb7f09-0af2-4c88-a9da-dea0261a7101",
                     "expectedControlType": "Button",
@@ -169,7 +169,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Click",
+                    "action": "SelectTile",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
