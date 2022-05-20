@@ -4,7 +4,7 @@ public class BasementBoard : Board
 {
 	[SerializeField] private Tile landing;
 
-	public override Vector2Int StartingPosition => new Vector2Int(_width / 2, _height / 2);
+	public override Vector2Int StartPosition => new Vector2Int(_width / 2, _height / 2);
 
 	protected override void Awake()
 	{
@@ -12,7 +12,7 @@ public class BasementBoard : Board
 		
 		base.Awake();
 
-		var pos = StartingPosition;
+		var pos = StartPosition;
 		tiles[pos.x, pos.y] = landing;
 	}
 

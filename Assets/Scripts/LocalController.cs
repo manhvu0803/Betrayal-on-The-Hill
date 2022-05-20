@@ -67,6 +67,9 @@ public class LocalController : MonoBehaviour
 		_currentBoard.gameObject.SetActive(true);
 		
 		switchBoardEvent?.Invoke(board);
+
+		Vector2Int startPosition = _currentBoard.StartPosition;
+		_camera.transform.position = _currentBoard.BoardPositionToWorld(startPosition, _camera.transform.position.y);
 	}
 	
 	public void OnSelectTile(InputAction.CallbackContext context)

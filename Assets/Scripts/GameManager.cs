@@ -38,7 +38,7 @@ public class GameManager : NetworkBehaviour
 
 		foreach (var player in players) {
 			player.currentBoard = groundBoard;
-			player.position = groundBoard.StartingPosition;
+			player.position = groundBoard.StartPosition;
 		}
 	}
 	

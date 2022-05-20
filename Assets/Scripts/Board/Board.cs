@@ -39,7 +39,7 @@ public abstract class Board : MonoBehaviour
 
 	protected Tile[,] tiles;
 
-	public virtual Vector2Int StartingPosition
+	public virtual Vector2Int StartPosition
 	{
 		get;
 	}
@@ -112,8 +112,9 @@ public abstract class Board : MonoBehaviour
 
 	public Vector3 BoardPositionToWorld(Vector2Int pos, float y)
 	{
-		float x = pos.x;
-		float z = pos.y;
+		Transform transf = this.transform;
+		float x = pos.x + transf.position.x - _width / 2;
+		float z = pos.y + transf.position.z - _height / 2;
 		return new Vector3(x, y, z);
 	}
 
