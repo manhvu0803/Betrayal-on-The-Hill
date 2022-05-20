@@ -9,7 +9,7 @@ using UnityEditor.SceneManagement;
 
 public class TilePool : MonoBehaviour
 {
-	class TileItem
+	private class TileItem
 	{
 		public Tile tile;
 
@@ -33,17 +33,6 @@ public class TilePool : MonoBehaviour
 
 	[SerializeField] private List<Tile> tileList;
 
-	private void Start()
-	{
-		tilePool = new List<TileItem>();
-		
-		foreach (var tile in tileList) {
-			NetworkClient.RegisterPrefab(tile.gameObject);
-			tilePool.Add(new TileItem(tile, UnityEngine.Random.Range(0, 50)));
-		}
-		tilePool.Sort((a, b) => a.weight.CompareTo(b.weight));
-	}
-
 	[ContextMenu("Get tile prefabs from Resources")]
 	private void GetTileDataResources()
 	{
@@ -53,6 +42,17 @@ public class TilePool : MonoBehaviour
 
 		tileList = new List<Tile>(Resources.LoadAll<Tile>(tileDir));
 		Debug.Log($"Loaded {tileList.Count} tiles in Resources/{tileDir}");
+	}
+
+	private void Start()
+	{
+		tilePool = new List<TileItem>();
+		
+		foreach (var tile in tileList) {
+			//NetworkClient.RegisterPrefab(tile.gameObject);
+			tilePool.Add(new TileItem(tile, UnityEngine.Random.Range(0, 50)));
+		}
+		tilePool.Sort((a, b) => a.weight.CompareTo(b.weight));
 	}
 
 	public void Reset()

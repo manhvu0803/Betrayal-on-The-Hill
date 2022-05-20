@@ -21,7 +21,7 @@ public class GameManager : NetworkBehaviour
 	{
 		base.OnStartServer();
 		if (tilePool == null) throw new System.NullReferenceException("tilePool is null");
-		StartCoroutine(GetPlayers(GameObject.FindObjectOfType<NetworkRoomManager>().numPlayers));
+		//StartCoroutine(GetPlayers(GameObject.FindObjectOfType<NetworkRoomManager>().numPlayers));
 	}
 
 	[Server]
@@ -42,11 +42,11 @@ public class GameManager : NetworkBehaviour
 		}
 	}
 	
-	[Server]
-	public void RequestTile(NetworkPlayer player)
+	//[Server]
+	public void RequestTile(Board board, Vector2Int pos)
 	{
-		var board = player.currentBoard;
-		var pos = player.position;
+		//var board = player.currentBoard;
+		//var pos = player.position;
 
 		if (board.TileAt(pos) != null) {
 			Debug.Log(board.TileAt(pos));
@@ -71,8 +71,8 @@ public class GameManager : NetworkBehaviour
 		var rotation = Board.NextValidRotation(newTile, surrounding, 1);
 		newTile.Initialize(tileMeshPrefab, pos, rotation);
 
-		NetworkServer.Spawn(newTile.gameObject);
-		RpcPutTile(newTile.gameObject, pos, board.Signature);
+		//NetworkServer.Spawn(newTile.gameObject);
+		//RpcPutTile(newTile.gameObject, pos, board.Signature);
 		
 		newTile.OnDiscover();
 	}

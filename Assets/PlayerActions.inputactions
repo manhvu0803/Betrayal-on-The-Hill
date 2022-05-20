@@ -6,15 +6,6 @@
             "id": "5c6d999e-f222-4b27-b302-f386c62f97a3",
             "actions": [
                 {
-                    "name": "Rotate",
-                    "type": "Button",
-                    "id": "605af4eb-928d-4451-8612-26616481544e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Move",
                     "type": "Value",
                     "id": "4c88ad7d-a4ff-4384-a2db-9144b5546a2f",
@@ -22,15 +13,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "PutTile",
-                    "type": "Button",
-                    "id": "2abe506c-58ef-4c58-9749-c3134180fb84",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 },
                 {
                     "name": "Zoom",
@@ -44,7 +26,7 @@
                 {
                     "name": "SelectTile",
                     "type": "Button",
-                    "id": "37fb7f09-0af2-4c88-a9da-dea0261a7101",
+                    "id": "a8ec8cd2-c890-4bd9-ba41-c5c84849ae08",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -109,50 +91,6 @@
                 },
                 {
                     "name": "",
-                    "id": "71817b31-e2ab-4143-8218-183622dc95da",
-                    "path": "*/{Submit}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "PutTile",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "1D Axis",
-                    "id": "cbab6b12-e072-48e6-8666-d7ad440ad514",
-                    "path": "1DAxis",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotate",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "negative",
-                    "id": "3be7aa15-e2fb-41cc-ac82-ba5a3b932660",
-                    "path": "<Keyboard>/e",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "positive",
-                    "id": "ca484a09-2521-4145-a687-2f454950185c",
-                    "path": "<Keyboard>/q",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Rotate",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
                     "id": "e74d677a-456b-4462-9be8-50d3d5c4d1f1",
                     "path": "<Mouse>/scroll/y",
                     "interactions": "",
@@ -164,7 +102,7 @@
                 },
                 {
                     "name": "",
-                    "id": "b943675d-d21a-473d-be3e-006a0a5d5960",
+                    "id": "34f4b4f5-02da-4b8e-978b-0e7f7b345e25",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
@@ -217,7 +155,7 @@
                 },
                 {
                     "name": "Click",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "844ecf6d-5741-4fbd-a932-2c142bcebab5",
                     "expectedControlType": "Button",
                     "processors": "",

@@ -51,23 +51,23 @@ public abstract class Board : MonoBehaviour
 	private Surrounding currentSurrounding;
 
 	#region Board size
-	[Header("Board size")]
-	[SerializeField] protected int width;
-	[SerializeField] protected int height;
+	[SerializeField]
+	protected int _width;
 
-	public int Width { get => width; }
-	public int Height { get => height; }
+	[SerializeField]
+	protected int _height;
+	
 	#endregion
 
 	protected virtual void Awake()
 	{
-		tiles = new Tile[width, height];
+		tiles = new Tile[_width, _height];
     }
 
 	public void Reset()
 	{
-		for (int i = 0; i < width; ++i) 
-			for (int j = 0; j < height; ++j)
+		for (int i = 0; i < _width; ++i) 
+			for (int j = 0; j < _height; ++j)
 				if (tiles[i, j]?.IsStartingTile() ?? false) tiles[i, j] = null;
 	}
 
@@ -77,10 +77,10 @@ public abstract class Board : MonoBehaviour
 		var srd = new Surrounding(Surrounding.State.Wall);
 
 		// Check north side
-		if (y >= height - 1 || tiles[x, y + 1] == null) srd.north = Surrounding.State.Empty;
+		if (y >= _height - 1 || tiles[x, y + 1] == null) srd.north = Surrounding.State.Empty;
 		else if (tiles[x, y + 1].GetDoors().south) srd.north = Surrounding.State.Door;
 		// Check east side
-		if (x >= width - 1 || tiles[x + 1, y] == null) srd.east = Surrounding.State.Empty;
+		if (x >= _width - 1 || tiles[x + 1, y] == null) srd.east = Surrounding.State.Empty;
 		else if (tiles[x + 1, y].GetDoors().west) srd.east = Surrounding.State.Door;
 		// Check south side
 		if (y <= 0 || tiles[x, y - 1] == null) srd.south = Surrounding.State.Empty;
@@ -112,10 +112,9 @@ public abstract class Board : MonoBehaviour
 
 	public Vector3 BoardPositionToWorld(Vector2Int pos, float y)
 	{
-		var trf = this.transform;
-		float x = pos.x * trf.lossyScale.x + trf.position.x;
-		float z = pos.y * trf.lossyScale.z + trf.position.z;
-		return new Vector3(x, y ,z);
+		float x = pos.x;
+		float z = pos.y;
+		return new Vector3(x, y, z);
 	}
 
 	public Vector3 BoardPositionToWorld(Vector2Int pos) => BoardPositionToWorld(pos, this.transform.position.y);

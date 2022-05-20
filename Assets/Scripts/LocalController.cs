@@ -1,7 +1,8 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(PlayerInput))]
 public class LocalController : MonoBehaviour
@@ -10,7 +11,10 @@ public class LocalController : MonoBehaviour
 	private Camera _camera;
 
 	[SerializeField]
-	Transform _highlighter;
+	private Transform _highlighter;
+
+	[SerializeField]
+	private GameManager _gameManager;
 
 	private PlayerInput _playerInput;
 
@@ -25,7 +29,15 @@ public class LocalController : MonoBehaviour
 	public event Action<Board> switchBoardEvent;
 	#endregion
 
-	private Board currentBoard;
+	private Board _currentBoard;
+
+	[SerializeField]
+	private Vector2Int _currentPosition;
+
+	// Certain actions (ie. a left click) invoke both Player events and UI buttons,
+	// and Unity discourage calling the check function in InputAction callbacks,
+	// so we update this variable in Update()
+	private bool _pointerIsOnUi;
 
     void Start()
 	{
@@ -37,23 +49,31 @@ public class LocalController : MonoBehaviour
 		_playerInput.actions["SelectTile"].performed += OnSelectTile;
     }
 
+	void Update()
+	{
+		_pointerIsOnUi = EventSystem.current.IsPointerOverGameObject();
+	}
+
 	public void OnSwitchGround() => SwitchBoard(groundBoard);
 	public void OnSwitchUpper() => SwitchBoard(upperBoard);
 	public void OnSwitchBasement() 	=> SwitchBoard(basementBoard);
 
 	private void SwitchBoard(Board board)
 	{
-		if (board == currentBoard) return;
+		if (board == _currentBoard) return;
 
-		currentBoard?.gameObject.SetActive(false);
-		currentBoard = board;
-		currentBoard.gameObject.SetActive(true);
+		_currentBoard?.gameObject.SetActive(false);
+		_currentBoard = board;
+		_currentBoard.gameObject.SetActive(true);
 		
 		switchBoardEvent?.Invoke(board);
 	}
 	
-	public void OnSelectTile(InputAction.CallbackContext context) 
+	public void OnSelectTile(InputAction.CallbackContext context)
 	{
+		if (_pointerIsOnUi)
+			return;
+
 		Vector2 mousePosition = Mouse.current.position.ReadValue();
 		Ray ray = _camera.ScreenPointToRay(mousePosition);
 
@@ -61,8 +81,14 @@ public class LocalController : MonoBehaviour
 		{
 			// The raycast will hit the board mesh, which is a seperate GameObject, so we need to get its parent
 			Board hitBoard = hit.transform.parent.GetComponent<Board>();
-			Vector2Int boardPosition = hitBoard.GetTileFromWorldPoint(hit.point);
-			_highlighter.transform.position = hitBoard.BoardPositionToWorld(boardPosition);
+			_currentPosition = hitBoard.GetTileFromWorldPoint(hit.point);
+			Debug.Log(_currentPosition);
+			_highlighter.transform.position = hitBoard.BoardPositionToWorld(_currentPosition);
 		}	
+	}
+
+	public void OnPlaceTile()
+	{
+		_gameManager.RequestTile(_currentBoard, _currentPosition);
 	}
 }

@@ -39,8 +39,8 @@ public class NetworkPlayer : NetworkBehaviour
 		localController.switchBoardEvent += SwitchBoard;
 	}
 
-	[Command]
-	void CmdPutTile() => gameManager.RequestTile(this);
+	//[Command]
+	//void CmdPutTile() => gameManager.RequestTile(this);
 
 	[Command]
 	void CmdMove(Vector2Int pos) => position = pos;

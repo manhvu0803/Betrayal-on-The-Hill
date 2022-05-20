@@ -7,7 +7,7 @@ public class GroundBoard : Board
 	[SerializeField] private Tile foyer;
 	[SerializeField] private Tile staircase;
 
-	public override Vector2Int StartingPosition => new Vector2Int(width - 1, height / 2);
+	public override Vector2Int StartingPosition => new Vector2Int(_width - 1, _height / 2);
 
 	protected override void Awake()
     {

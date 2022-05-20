@@ -9,14 +9,14 @@ public class Tile : MonoBehaviour
 	{
 		public bool upper, ground, basement;
 
-		public Location(Location loc)
+		public override string ToString() 
 		{
-			upper = loc.upper;
-			ground = loc.ground;
-			basement = loc.basement;
+			string str = "";
+			str += (upper)? "u" : "";
+			str += (ground)? "g" : "";
+			str += (basement)? "b" : "";
+			return str;
 		}
-
-		public override string ToString() => $"u:{upper} g:{ground} b:{basement}";
 	}
 
 	[SerializeField] private string tileName;
@@ -52,7 +52,7 @@ public class Tile : MonoBehaviour
 		newMesh.GetComponent<MeshRenderer>().material.mainTexture = texture;
 		
 		this.name = $"Tile_{pos.x}_{pos.y}_{tileName}";
-		this.transform.localPosition = new Vector3(pos.x, 0, pos.y);
+		this.transform.position = new Vector3(pos.x, 0, pos.y);
 		this.transform.Rotate(0, 0, rotation);
 	}
 
