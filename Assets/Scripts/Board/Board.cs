@@ -149,16 +149,16 @@ public abstract class Board : MonoBehaviour
 		return angle;
 	}
 
-	public Vector2Int GetTileFromWorldPoint(Vector3 point) 
+	public Vector2Int GetSquareFromWorldPoint(Vector3 worldPoint) 
 	{
-		Vector3 localPoint = this.transform.InverseTransformPoint(point);
-		return GetTileFromLocalPoint(point);
+		Vector3 localPoint = this.transform.InverseTransformPoint(worldPoint);
+		return GetSquareFromLocalPoint(localPoint);
 	}
 
-	private Vector2Int GetTileFromLocalPoint(Vector3 point) 
+	private Vector2Int GetSquareFromLocalPoint(Vector3 point) 
 	{
-		int x = (int)Math.Round(point.x);
-		int y = (int)Math.Round(point.z);
+		int x = (int)Math.Round(point.x) + _width / 2;
+		int y = (int)Math.Round(point.z) + _height / 2;
 		return new Vector2Int(x, y);
 	}
 }

@@ -80,8 +80,8 @@ public class LocalController : MonoBehaviour
 		{
 			// The raycast will hit the board mesh, which is a seperate GameObject, so we need to get its parent
 			Board hitBoard = hit.transform.parent.GetComponent<Board>();
-			_currentPosition = hitBoard.GetTileFromWorldPoint(hit.point);
-			Debug.Log(_currentPosition);
+			_currentPosition = hitBoard.GetSquareFromWorldPoint(hit.point);
+			Debug.Log($"Current position: {_currentPosition}");
 			_highlighter.transform.position = hitBoard.BoardPositionToWorld(_currentPosition);
 		}	
 	}
