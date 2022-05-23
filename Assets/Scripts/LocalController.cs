@@ -54,11 +54,7 @@ public class LocalController : MonoBehaviour
 		_pointerIsOnUi = EventSystem.current.IsPointerOverGameObject();
 	}
 
-	public void OnSwitchGround() => SwitchBoard(groundBoard);
-	public void OnSwitchUpper() => SwitchBoard(upperBoard);
-	public void OnSwitchBasement() 	=> SwitchBoard(basementBoard);
-
-	private void SwitchBoard(Board board)
+	public void SwitchBoard(Board board)
 	{
 		if (board == _currentBoard) return;
 
