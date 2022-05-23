@@ -1,7 +1,37 @@
 {
   "dependencies": {
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.2d.tilemap": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
+    "com.unity.analytics": {
+      "version": "3.6.12",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.burst": {
+      "version": "1.6.5",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.mathematics": "1.2.1"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.unity.collab-proxy": {
-      "version": "1.5.7",
+      "version": "1.15.17",
       "depth": 0,
       "source": "registry",
       "dependencies": {
