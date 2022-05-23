@@ -1,12 +1,11 @@
 using System;
-using UnityEngine;
 
 [Serializable]
-public struct Direction
+public struct Doors
 {
 	public bool north, east, south, west;
 
-	public Direction(bool n, bool e, bool s, bool w)
+	public Doors(bool n, bool e, bool s, bool w)
 	{
 		north = n;
 		east = e;
@@ -14,9 +13,9 @@ public struct Direction
 		west = w;
 	}
 
-	public Direction(Direction dir) : this(dir.north, dir.east, dir.south, dir.west) {}
+	public Doors(Doors dir) : this(dir.north, dir.east, dir.south, dir.west) {}
 
-	public Direction AfterRotate(int rotation)
+	public Doors AfterRotate(int rotation)
 	{
 		// Push negative angles to positive
 		rotation = rotation / 90 + 4;
@@ -27,7 +26,7 @@ public struct Direction
 		dirs[(2 + rotation) % 4] = south;
 		dirs[(3 + rotation) % 4] = west;
 
-		return new Direction(dirs[0], dirs[1], dirs[2], dirs[3]);
+		return new Doors(dirs[0], dirs[1], dirs[2], dirs[3]);
 	}
 
 	public override string ToString() => $"North:{north} East:{east} South:{south} West:{west}";

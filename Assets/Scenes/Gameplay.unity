@@ -201,7 +201,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &28711264
 Transform:
   m_ObjectHideFlags: 0
@@ -231,8 +231,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21fcdd25980015b48aabba39493cd356, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 50
-  _height: 50
+  <Width>k__BackingField: 50
+  <Height>k__BackingField: 50
   landing: {fileID: 1688101214}
 --- !u!1 &60129814
 GameObject:
@@ -1142,7 +1142,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 581876260}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10, y: 0, z: 20}
+  m_LocalPosition: {x: 10, y: -0.01, z: 20}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1163,8 +1163,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeaf69a081e6bde479b80a66fb1c5dd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 20
-  _height: 40
+  <Width>k__BackingField: 20
+  <Height>k__BackingField: 40
   entrance: {fileID: 980122542}
   foyer: {fileID: 1830384188}
   staircase: {fileID: 699283099}
@@ -1349,6 +1349,7 @@ GameObject:
   - component: {fileID: 822946454}
   - component: {fileID: 822946453}
   - component: {fileID: 822946452}
+  - component: {fileID: 822946455}
   m_Layer: 5
   m_Name: RotateTileButton
   m_TagString: Untagged
@@ -1423,7 +1424,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1076678247}
         m_TargetAssemblyTypeName: LocalController, Assembly-CSharp
-        m_MethodName: 
+        m_MethodName: RotateTile
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1471,6 +1472,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 822946450}
   m_CullTransparentMesh: 1
+--- !u!114 &822946455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 822946450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7766b66e1ff7f744fb83923426dbebb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _localController: {fileID: 1076678247}
 --- !u!4 &859060828 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2934770848507787959, guid: c0abda85e5c1b1c4ca20f91113f6d4c1, type: 3}
@@ -1564,7 +1578,6 @@ MonoBehaviour:
   groundBoard: {fileID: 581876262}
   upperBoard: {fileID: 1366769563}
   basementBoard: {fileID: 28711266}
-  _currentPosition: {x: 0, y: 0}
 --- !u!4 &1076678248
 Transform:
   m_ObjectHideFlags: 0
@@ -1951,7 +1964,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1076678247}
         m_TargetAssemblyTypeName: LocalController, Assembly-CSharp
-        m_MethodName: OnPlaceTile
+        m_MethodName: PlaceTile
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2204,7 +2217,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1366769562
 Transform:
   m_ObjectHideFlags: 0
@@ -2234,8 +2247,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a3cfcdb7f39323488456a955985401e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 50
-  _height: 50
+  <Width>k__BackingField: 50
+  <Height>k__BackingField: 50
   landing: {fileID: 1342348141}
 --- !u!1 &1466186322
 GameObject:

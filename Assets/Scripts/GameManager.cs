@@ -2,8 +2,6 @@ using Mirror;
 using UnityEngine;
 using System.Collections;
 
-using SurState = Board.Surrounding.State;
-
 public class GameManager : NetworkBehaviour
 {
 	[SerializeField] private GameObject tileMeshPrefab;
@@ -17,6 +15,8 @@ public class GameManager : NetworkBehaviour
 
 	[ReadOnlyField] [SerializeField] private NetworkPlayer[] players;
 
+	private Surrounding _currentSurrounding = null;
+
 	public override void OnStartServer()
 	{
 		base.OnStartServer();
@@ -29,61 +29,66 @@ public class GameManager : NetworkBehaviour
 	{
 		// Polling every 2 frames until found all player object
 		// Since the build keep failing to find remote player
-		do {
+		do 
+		{
 			yield return null;
 			yield return null;
 			players = GameObject.FindObjectsOfType<NetworkPlayer>();
 		}
 		while (players.Length < playerCount);
 
-		foreach (var player in players) {
+		foreach (var player in players) 
+		{
 			player.currentBoard = groundBoard;
 			player.position = groundBoard.StartPosition;
 		}
 	}
 	
 	//[Server]
-	public void RequestTile(Board board, Vector2Int pos)
+	public bool RequestTile(Board board, Vector2Int position)
 	{
-		//var board = player.currentBoard;
-		//var pos = player.position;
-
-		if (board.TileAt(pos) != null) {
-			Debug.Log(board.TileAt(pos));
-			return;
+		if (board.TileAt(position) != null) 
+		{
+			Debug.Log(board.TileAt(position));
+			return false;
 		}
 
-		var surrounding = board.GetSurrounding(pos);
-		if (surrounding.north != SurState.Door 
-		 && surrounding.east  != SurState.Door 
-		 && surrounding.south != SurState.Door 
-		 && surrounding.west  != SurState.Door) {
+		Surrounding surrounding = new Surrounding(position, board);
+		
+		Surrounding.State door = Surrounding.State.Door;
+		if (surrounding.North != door && surrounding.East != door && surrounding.South != door && surrounding.West != door) 
+		{
 			Debug.Log("No doors");
-			return;
+			return false;
 		}
 
 		var tile = tilePool.GetRandomTile(board.TileChooser);
-		if (tile == null) return;
+		if (tile == null) 
+			return false;
 
 		var newTile = Instantiate(tile.gameObject).GetComponent<Tile>();
-		board.PutNewTile(pos, newTile);
+		board.PutNewTile(position, newTile);
 
-		var rotation = Board.NextValidRotation(newTile, surrounding, 1);
-		newTile.Initialize(tileMeshPrefab, pos, rotation);
+		var rotation = surrounding.NextValidRotation(newTile);
+		newTile.Initialize(tileMeshPrefab, position, rotation);
 
 		//NetworkServer.Spawn(newTile.gameObject);
-		//RpcPutTile(newTile.gameObject, pos, board.Signature);
+		//RpcPutTile(newTile.gameObject, position, board.Signature);
 		
-		newTile.OnDiscover();
+		//newTile.OnDiscover();
+		
+		_currentSurrounding = surrounding;
+
+		return true;
 	}
 
 	[ClientRpc(includeOwner = false)]
-	void RpcPutTile(GameObject newTileObject, Vector2Int pos, char boardSignature)
+	void RpcPutTile(GameObject newTileObject, Vector2Int position, char boardSignature)
 	{
 		if (!this.isClientOnly) return;
 		var newTile = newTileObject.GetComponent<Tile>();
-		GetBoardBySignature(boardSignature).PutNewTile(pos, newTile);
-		newTile.Initialize(tileMeshPrefab, pos, 0);
+		GetBoardBySignature(boardSignature).PutNewTile(position, newTile);
+		newTile.Initialize(tileMeshPrefab, position, 0);
 	}
 
 	public Board GetBoardBySignature(char signature)

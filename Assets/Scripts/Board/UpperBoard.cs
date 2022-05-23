@@ -4,7 +4,7 @@ public class UpperBoard : Board
 {
 	[SerializeField] private Tile landing;
 
-	public override Vector2Int StartPosition => new Vector2Int(_width / 2, _height / 2);
+	public override Vector2Int StartPosition => new Vector2Int(Width / 2, Height / 2);
 
 	protected override void Awake()
 	{

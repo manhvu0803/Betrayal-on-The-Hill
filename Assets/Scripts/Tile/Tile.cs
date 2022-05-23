@@ -25,7 +25,7 @@ public class Tile : MonoBehaviour
 
 	[SerializeField] private Location location;
 
-	[SerializeField] private Direction doors;
+	[SerializeField] private Doors doors;
 
 	[SerializeField] private Texture texture;
 
@@ -34,7 +34,7 @@ public class Tile : MonoBehaviour
 	public virtual void OnExit() {}
 
 	// The rotation in the inspector is a lie :(
-	public Direction GetDoors() => new Direction(doors.AfterRotate((int)transform.rotation.eulerAngles.y));
+	public Doors GetDoors() => new Doors(doors.AfterRotate((int)transform.rotation.eulerAngles.y));
 
 	public Location GetLocation() => location;
 
