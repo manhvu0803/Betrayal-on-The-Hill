@@ -1,45 +1,27 @@
-using System;
 using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+	[SerializeField]
+	private TileData data;
 
-	[Serializable]
-	public struct Location
+	public bool IsStartingTile 
 	{
-		public bool upper, ground, basement;
-
-		public override string ToString() 
-		{
-			string str = "";
-			str += (upper)? "u" : "";
-			str += (ground)? "g" : "";
-			str += (basement)? "b" : "";
-			return str;
-		}
+		get => data.IsStartingTile;
 	}
 
-	[SerializeField] private string tileName;
-	
-	[SerializeField] private bool isStartingTile;
+	public TileLocation Location 
+	{
+		get => data.Location;
+	}
 
-	[SerializeField] private Location location;
+	public Doors GetDoors() => data.Doors.AfterRotate((int)transform.rotation.eulerAngles.y);
 
-	[SerializeField] private Doors doors;
-
-	[SerializeField] private Texture texture;
 
 	public virtual void OnDiscover() {}
 	public virtual void OnEnter() {}
 	public virtual void OnExit() {}
-
-	// The rotation in the inspector is a lie :(
-	public Doors GetDoors() => new Doors(doors.AfterRotate((int)transform.rotation.eulerAngles.y));
-
-	public Location GetLocation() => location;
-
-	public bool IsStartingTile() => isStartingTile;
-
+	
 	public void Initialize(GameObject meshPrefab, Vector2Int pos, float rotation)
 	{
 		var newMesh = Instantiate(meshPrefab);
@@ -49,9 +31,9 @@ public class Tile : MonoBehaviour
 		newMesh.transform.localPosition = Vector3.zero;
 		newMesh.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-		newMesh.GetComponent<MeshRenderer>().material.mainTexture = texture;
+		newMesh.GetComponent<MeshRenderer>().material.mainTexture = data.Texture;
 		
-		this.name = $"Tile_{pos.x}_{pos.y}_{tileName}";
+		this.name = $"Tile_{pos.x}_{pos.y}_{data.TileName}";
 		this.transform.position = new Vector3(pos.x, 0, pos.y);
 		this.transform.Rotate(0, 0, rotation);
 	}

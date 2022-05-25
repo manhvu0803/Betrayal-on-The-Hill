@@ -80,10 +80,10 @@ public class TilePool : MonoBehaviour
 		return tilePool[i].tile;
 	}
 
-	public Tile GetRandomTile(Func<Tile.Location, bool> chooser)
+	public Tile GetRandomTile(Func<TileLocation, bool> chooser)
 	{
 		int i = 0;
-		while (i < tilePool.Count && (tilePool[i].used || !chooser(tilePool[i].tile.GetLocation())))
+		while (i < tilePool.Count && (tilePool[i].used || !chooser(tilePool[i].tile.Location)))
 			++i;
 
 		if (i >= tilePool.Count) {

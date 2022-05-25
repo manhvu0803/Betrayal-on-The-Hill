@@ -16,7 +16,7 @@ public class UpperBoard : Board
 		tiles[pos.x, pos.y] = landing;
 	}
 
-	public override bool TileChooser(Tile.Location location) => location.upper;
+	public override bool TileChooser(TileLocation location) => location.upper;
 
 	public override char Signature => 'u';
 }

@@ -32,10 +32,10 @@ public abstract class Board : MonoBehaviour
 	{
 		for (int i = 0; i < Width; ++i)
 			for (int j = 0; j < Height; ++j)
-				if (tiles[i, j]?.IsStartingTile() ?? false) tiles[i, j] = null;
+				if (tiles[i, j]?.IsStartingTile ?? false) tiles[i, j] = null;
 	}
 
-	public virtual bool TileChooser(Tile.Location location) => true;
+	public virtual bool TileChooser(TileLocation location) => true;
 
 	public Tile TileAt(int x, int y) => tiles[x, y];
 

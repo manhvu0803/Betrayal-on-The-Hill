@@ -16,7 +16,7 @@ public class BasementBoard : Board
 		tiles[pos.x, pos.y] = landing;
 	}
 
-	public override bool TileChooser(Tile.Location location) => location.basement;
+	public override bool TileChooser(TileLocation location) => location.basement;
 	
 	public override char Signature => 'b';
 }

@@ -18,13 +18,11 @@ public class GroundBoard : Board
 		
 		var pos = StartPosition;
 		tiles[pos.x, pos.y] = entrance;
-		--pos.x;
-		tiles[pos.x, pos.y] = foyer;
-		--pos.x;
-		tiles[pos.x, pos.y] = staircase;
+		tiles[pos.x - 1, pos.y] = foyer;
+		tiles[pos.x - 2, pos.y] = staircase;
     }
 
-	public override bool TileChooser(Tile.Location location) => location.ground;
+	public override bool TileChooser(TileLocation location) => location.ground;
 
 	public override char Signature => 'g';
 }
