@@ -17,11 +17,6 @@ public class Tile : MonoBehaviour
 
 	public Doors GetDoors() => data.Doors.AfterRotate((int)transform.rotation.eulerAngles.y);
 
-
-	public virtual void OnDiscover() {}
-	public virtual void OnEnter() {}
-	public virtual void OnExit() {}
-	
 	public void Initialize(GameObject meshPrefab, Vector2Int pos, float rotation)
 	{
 		var newMesh = Instantiate(meshPrefab);

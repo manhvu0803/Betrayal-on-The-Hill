@@ -16,4 +16,10 @@ public class TileData : ScriptableObject
 
 	[field: SerializeField]
 	public TileLocation Location { get; private set; }
+
+	public virtual void OnDiscover() {}
+	
+	public virtual void OnEnter() {}
+	
+	public virtual void OnExit() {}
 }
