@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "My assets/Tile data")]
 public class TileData : ScriptableObject
 {
 	[field: SerializeField] 
@@ -16,10 +17,4 @@ public class TileData : ScriptableObject
 
 	[field: SerializeField]
 	public TileLocation Location { get; private set; }
-
-	public virtual void OnDiscover() {}
-	
-	public virtual void OnEnter() {}
-	
-	public virtual void OnExit() {}
 }
