@@ -2,20 +2,22 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-	[SerializeField]
-	private TileData data;
+	[field: SerializeField] 
+	public string TileName { get; private set; }
+	
+	[field: SerializeField] 
+	public Texture Texture { get; private set; }
 
-	public bool IsStartingTile 
-	{
-		get => data.IsStartingTile;
-	}
+	[field: SerializeField]
+	public bool IsStartingTile { get; private set; }
 
-	public TileLocation Location 
-	{
-		get => data.Location;
-	}
+	[field: SerializeField] 
+	private Doors Doors { get; set; }
 
-	public Doors GetDoors() => data.Doors.AfterRotate((int)transform.rotation.eulerAngles.y);
+	[field: SerializeField]
+	public TileLocation Location { get; private set; }
+
+	public Doors GetDoors() => Doors.AfterRotate((int)transform.rotation.eulerAngles.y);
 
 	public void Initialize(GameObject meshPrefab, Vector2Int pos)
 	{
@@ -25,12 +27,14 @@ public class Tile : MonoBehaviour
 		newMesh.transform.localPosition = Vector3.zero;
 		newMesh.transform.localRotation = Quaternion.Euler(0, 0, 0);
 
-		newMesh.GetComponent<MeshRenderer>().material.mainTexture = data.Texture;
+		newMesh.GetComponent<MeshRenderer>().material.mainTexture = Texture;
 		
-		this.name = $"Tile_{pos.x}_{pos.y}_{data.TileName}";
+		this.name = $"Tile_{pos.x}_{pos.y}_{TileName}";
 		this.transform.position = new Vector3(pos.x, 0, pos.y);
 	}
-
+	
+	public override string ToString() => name;
+	
 	public virtual void OnDiscover() {}
 	
 	public virtual void OnEnter() {}
@@ -40,6 +44,4 @@ public class Tile : MonoBehaviour
 	public virtual void OnExit() {}
 
 	public virtual void OnEndTurn() {}
-	
-	public override string ToString() => name;
 }

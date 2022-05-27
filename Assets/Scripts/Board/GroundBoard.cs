@@ -22,7 +22,7 @@ public class GroundBoard : Board
 		tiles[pos.x - 2, pos.y] = staircase;
     }
 
-	public override bool TileChooser(TileLocation location) => location.ground;
+	public override bool TileChooser(Tile tile) => tile.Location.IsGround;
 
 	public override char Signature => 'g';
 }

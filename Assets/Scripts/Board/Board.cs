@@ -35,7 +35,7 @@ public abstract class Board : MonoBehaviour
 				if (tiles[i, j]?.IsStartingTile ?? false) tiles[i, j] = null;
 	}
 
-	public virtual bool TileChooser(TileLocation location) => true;
+	public virtual bool TileChooser(Tile tile) => true;
 
 	public Tile TileAt(int x, int y) => tiles[x, y];
 

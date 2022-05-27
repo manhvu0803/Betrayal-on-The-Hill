@@ -14,7 +14,8 @@ public class GameManager : SingletonNetworkBehaviour
     [SerializeField] private Board upperBoard;
     [SerializeField] private Board basementBoard;
 
-    [ReadOnlyField][SerializeField] private NetworkPlayer[] players;
+    [ReadOnlyField, SerializeField] 
+	private NetworkPlayer[] players;
 
     private Surrounding _currentSurrounding = null;
 
@@ -26,14 +27,15 @@ public class GameManager : SingletonNetworkBehaviour
         }
 
         base.OnStartServer();
-        //StartCoroutine(GetPlayers(GameObject.FindObjectOfType<NetworkRoomManager>().numPlayers));
+        //StartCoroutine(SetPlayersStart());
     }
 
     [Server]
-    IEnumerator GetPlayers(int playerCount)
+    IEnumerator SetPlayersStart()
     {
         // Polling every 2 frames until found all player object
         // Since the build keep failing to find remote player
+		int playerCount = GameObject.FindObjectOfType<NetworkRoomManager>().numPlayers;
         do
         {
             yield return null;
@@ -67,7 +69,7 @@ public class GameManager : SingletonNetworkBehaviour
             return false;
         }
 
-        var tile = tilePool.GetRandomTile(board.TileChooser);
+        var tile = tilePool.GetRandomItemBy(board.TileChooser);
         if (tile == null)
             return false;
 

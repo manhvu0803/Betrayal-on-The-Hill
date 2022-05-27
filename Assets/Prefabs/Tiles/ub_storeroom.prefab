@@ -28,6 +28,7 @@ Transform:
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -41,21 +42,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 2982738189310450614}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bed0610a6491df845bdcba6778483402, type: 3}
+  m_Script: {fileID: 11500000, guid: e337c2b0e51c7b54f8bb593c50704d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileName: Storeroom
-  isStartingTile: 0
-  location:
-    upper: 1
-    ground: 0
-    basement: 1
-  doors:
+  <TileName>k__BackingField: Storeroom
+  <IsStartingTile>k__BackingField: 0
+  <Texture>k__BackingField: {fileID: 2800000, guid: f7270367de9be8d44a23cfa7d2780a77, type: 3}
+  <Doors>k__BackingField:
     north: 1
     east: 0
     south: 0
     west: 0
-  texture: {fileID: 2800000, guid: f7270367de9be8d44a23cfa7d2780a77, type: 3}
+  <Location>k__BackingField:
+    upper: 1
+    ground: 0
+    basement: 1
 --- !u!114 &-1463165409649869823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,5 +72,5 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: 94ade903297f9314799922dcd88c0b2e
   hasSpawned: 0

@@ -3,14 +3,16 @@ using System;
 [Serializable]
 public struct TileLocation
 {
-    public bool upper, ground, basement;
+    public bool IsUpper;
+    public bool IsGround;
+    public bool IsBasement;
 
     public override string ToString() 
     {
         string str = "";
-        str += (upper)? "u" : "";
-        str += (ground)? "g" : "";
-        str += (basement)? "b" : "";
+        str += (IsUpper)? "u" : "";
+        str += (IsGround)? "g" : "";
+        str += (IsBasement)? "b" : "";
         return str;
     }
 }
