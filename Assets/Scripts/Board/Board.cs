@@ -1,18 +1,12 @@
 using System;
 using UnityEngine;
+using Mirror;
 
-public abstract class Board : MonoBehaviour
+public abstract class Board : NetworkBehaviour
 {
 	protected Tile[,] tiles;
 
-	public virtual Vector2Int StartPosition
-	{
-		get;
-	}
-
-	// A single lowercase character that represent the board
-	// 'g' for Ground, 'b' for Basement, 'u' for Upper
-	public abstract char Signature { get; }
+	public virtual Vector2Int StartPosition { get; }
 
 	#region Board size
 	[field: SerializeField]

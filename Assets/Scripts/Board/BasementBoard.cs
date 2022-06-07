@@ -17,6 +17,4 @@ public class BasementBoard : Board
 	}
 
 	public override bool TileChooser(Tile tile) => tile.Location.IsBasement;
-	
-	public override char Signature => 'b';
 }

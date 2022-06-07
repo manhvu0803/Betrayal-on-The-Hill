@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using Mirror;
 
-public class GameManager : SingletonNetworkBehaviour
+public class GameManager : SingletonNetBehaviour<GameManager>
 {
     [SerializeField] private GameObject tileMeshPrefab;
 
@@ -21,11 +21,6 @@ public class GameManager : SingletonNetworkBehaviour
 
     public override void OnStartServer()
     {
-        if (tilePool == null)
-        {
-            throw new NullReferenceException("Reference to TilePool object is null");
-        }
-
         base.OnStartServer();
         //StartCoroutine(SetPlayersStart());
     }
@@ -46,8 +41,8 @@ public class GameManager : SingletonNetworkBehaviour
 
         foreach (var player in players)
         {
-            player.currentBoard = groundBoard;
-            player.position = groundBoard.StartPosition;
+            player.CurrentBoard = groundBoard;
+            player.Position = groundBoard.StartPosition;
         }
     }
 
@@ -62,10 +57,9 @@ public class GameManager : SingletonNetworkBehaviour
 
         Surrounding surrounding = new Surrounding(position, board);
 
-        Surrounding.State door = Surrounding.State.Door;
-        if (surrounding.North != door && surrounding.East != door && surrounding.South != door && surrounding.West != door)
+        if (surrounding.DoorCount <= 0)
         {
-            Debug.Log("No doors");
+            Debug.Log("No surrounding doors");
             return false;
         }
 
@@ -83,27 +77,17 @@ public class GameManager : SingletonNetworkBehaviour
         //RpcPutTile(newTile.gameObject, position, board.Signature);
 
         _currentSurrounding = surrounding;
+        newTile.OnDiscover();
 
         return true;
     }
 
     [ClientRpc(includeOwner = false)]
-    void RpcPutTile(GameObject newTileObject, Vector2Int position, char boardSignature)
+    void RpcPutTile(GameObject newTileObject, Vector2Int position, Board board)
     {
         if (!this.isClientOnly) return;
         var newTile = newTileObject.GetComponent<Tile>();
-        GetBoardBySignature(boardSignature).PutNewTile(position, newTile);
+        board.PutNewTile(position, newTile);
         newTile.Initialize(tileMeshPrefab, position);
-    }
-
-    public Board GetBoardBySignature(char signature)
-    {
-        switch (signature)
-        {
-            case 'g': return groundBoard;
-            case 'b': return basementBoard;
-            case 'u': return upperBoard;
-            default: throw new System.ArgumentException($"No board of '{signature}' signature");
-        }
     }
 }

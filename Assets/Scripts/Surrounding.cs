@@ -12,11 +12,16 @@ public class Surrounding
 	public State South { get; private set; } = State.Wall;
 	public State West  { get; private set; } = State.Wall;
 
+	public int DoorCount { get; private set; }
+
 	public Surrounding(Vector2Int position, Board board)
 	{
-		int x = position.x;
-		int y = position.y;
+		SetSurrounding(position.x, position.y, board);
+		CheckSurroundingDoors();
+	}
 
+	private void SetSurrounding(int x, int y, Board board)
+	{
 		if (y >= board.Height - 1 || board.TileAt(x, y + 1) == null)
 			North = State.Empty;
 		else if (board.TileAt(x, y + 1).GetDoors().south)
@@ -36,6 +41,20 @@ public class Surrounding
 			West = State.Empty;
 		else if (board.TileAt(x - 1, y).GetDoors().east)
 			West = State.Door;
+	}
+
+	private void CheckSurroundingDoors()
+	{
+		UpdateDoorCount(North);
+		UpdateDoorCount(East);
+		UpdateDoorCount(South);
+		UpdateDoorCount(West);
+	}
+
+	private void UpdateDoorCount(State state)
+	{
+		if (state == State.Door)
+			DoorCount += 1;
 	}
 
 	public float NextValidRotation(Tile tile, int direction = 1)

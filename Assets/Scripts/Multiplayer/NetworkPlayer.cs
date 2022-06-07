@@ -3,63 +3,50 @@ using UnityEngine;
 
 public class NetworkPlayer : NetworkBehaviour
 {
-	private GameManager gameManager;
+	[SyncVar(hook = nameof(OnPlayerNameChanged))]
+	public string PlayerName;
 
-	private LocalController localController;
+	[ReadOnlyField]
+	public Board CurrentBoard;
 
-	[SyncVar(hook = nameof(ChangePlayerName))] public string playerName;
+	[ReadOnlyField, SyncVar] 
+	public Vector2Int Position;
 
-	[ReadOnlyField] public Board currentBoard;
-
-	[ReadOnlyField] [SyncVar] public Vector2Int position;
-
-#if UNITY_EDITOR
-	private new MeshRenderer renderer;
-#else
-	private MeshRenderer renderer;
-#endif
+	
 
 	void Start()
 	{
-		gameManager = GameObject.FindObjectOfType<GameManager>();
-
-		renderer = GetComponent<MeshRenderer>();
-
-		if (this.isLocalPlayer) LocalPlayerSetUp();
+		if (this.isLocalPlayer)
+		{
+			SetUpLocalPlayer();
+		}
 	}
 
-	public override string ToString()
+	void SetUpLocalPlayer()
 	{
-		return $"{this.name}_{this.currentBoard}_{this.position}";
+		LocalController.Instance.OnSwitchBoard += SwitchBoard;
 	}
-
-	void LocalPlayerSetUp()
-	{
-		localController = GameObject.FindObjectOfType<LocalController>();
-		localController.OnSwitchBoard += SwitchBoard;
-	}
-
-	//[Command]
-	//void CmdPutTile() => gameManager.RequestTile(this);
-
-	[Command]
-	void CmdMove(Vector2Int pos) => position = pos;
 
 	void SwitchBoard(Board board) => CmdSwitchBoard(board.Signature);
 
 	[Command]
 	void CmdSwitchBoard(char boardSignature)
 	{
-		this.currentBoard = gameManager.GetBoardBySignature(boardSignature);
-		this.RpcSwitchBoard(boardSignature);
+		CurrentBoard = GameManager.Instance.GetBoardBySignature(boardSignature);
+		RpcSwitchBoard(boardSignature);
 	}
 
 	[ClientRpc]
-	public void RpcSwitchBoard(char boardSignature) => this.currentBoard = gameManager.GetBoardBySignature(boardSignature);
+	public void RpcSwitchBoard(char boardSignature) => CurrentBoard = GameManager.Instance.GetBoardBySignature(boardSignature);
 
-	void ChangePlayerName(string oldName, string newName)
+	void OnPlayerNameChanged(string oldName, string newName)
 	{
 		Debug.Log($"Player {oldName} change to {newName}");
 		this.gameObject.name = $"{newName}_{((this.isLocalPlayer)? "Local" : "Remote")}";
+	}
+
+	public override string ToString()
+	{
+		return $"{name}_{CurrentBoard}_{Position}";
 	}
 }

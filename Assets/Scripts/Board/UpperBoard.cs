@@ -17,6 +17,4 @@ public class UpperBoard : Board
 	}
 
 	public override bool TileChooser(Tile tile) => tile.Location.IsUpper;
-
-	public override char Signature => 'u';
 }

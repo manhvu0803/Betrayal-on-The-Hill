@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class Pool<T> : SingletonBehaviour where T : MonoBehaviour
+public class Pool<T> : SingletonBehaviour<Pool<T>> where T : MonoBehaviour
 {
     protected class PoolItem
     {
@@ -41,9 +41,9 @@ public class Pool<T> : SingletonBehaviour where T : MonoBehaviour
 	[SerializeField]
 	protected T[] _itemList;
 
-	protected override void Start()
+	protected override void Awake()
 	{
-		base.Start();
+		base.Awake();
 		
 		_itemPool = new PoolItem[_itemList.Length];
 		
@@ -69,7 +69,9 @@ public class Pool<T> : SingletonBehaviour where T : MonoBehaviour
 	{
 		int i = 0;
 		while (i < _itemPool.Length && _itemPool[i].Used)
+		{
 			++i;
+		}
 
 		if (_itemPool.Length <= i) 
 		{
@@ -85,9 +87,12 @@ public class Pool<T> : SingletonBehaviour where T : MonoBehaviour
 	{
 		int i = 0;
 		while (i < _itemPool.Length && (_itemPool[i].Used || !chooser(_itemPool[i].Item)))
+		{
 			++i;
+		}
 
-		if (i >= _itemPool.Length) {
+		if (i >= _itemPool.Length) 
+		{
 			Debug.Log($"Out of tiles for {chooser.Target}");
 			return null;
 		}

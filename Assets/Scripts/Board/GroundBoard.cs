@@ -23,6 +23,4 @@ public class GroundBoard : Board
     }
 
 	public override bool TileChooser(Tile tile) => tile.Location.IsGround;
-
-	public override char Signature => 'g';
 }

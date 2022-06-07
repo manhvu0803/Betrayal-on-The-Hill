@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerInput))]
-public class LocalController : MonoBehaviour
+public class LocalController : SingletonBehaviour<LocalController>
 {
 	[SerializeField]
 	private Camera _camera;
@@ -18,9 +18,14 @@ public class LocalController : MonoBehaviour
 
 	#region Boards
 	[Header("Boards")]
-	[SerializeField] private Board groundBoard;
-	[SerializeField] private Board upperBoard;
-	[SerializeField] private Board basementBoard;
+	[SerializeField] 
+	private Board _groundBoard;
+
+	[SerializeField] 
+	private Board _upperBoard;
+	
+	[SerializeField] 
+	private Board _basementBoard;
 	#endregion
 
 	#region Events
@@ -42,9 +47,9 @@ public class LocalController : MonoBehaviour
 
     void Start()
 	{
-		upperBoard.gameObject.SetActive(false);
-		basementBoard.gameObject.SetActive(false);
-		SwitchBoard(groundBoard);
+		_upperBoard.gameObject.SetActive(false);
+		_basementBoard.gameObject.SetActive(false);
+		SwitchBoard(_groundBoard);
 
 		PlayerInput playerInput = this.GetComponent<PlayerInput>();
 		playerInput.actions["SelectTile"].performed += OnLeftClick;
@@ -67,7 +72,7 @@ public class LocalController : MonoBehaviour
 
 		_currentPosition = _currentBoard.StartPosition;
 		_camera.transform.position = _currentBoard.BoardPositionToWorld(_currentPosition, _camera.transform.position.y);
-		MoveCursorToCurrentPosition();
+		MoveCursorTo(_currentPosition);
 	}
 
 	public void OnLeftClick(InputAction.CallbackContext context)
@@ -76,6 +81,11 @@ public class LocalController : MonoBehaviour
 			return;
 
 		OnEndPuttingTile?.Invoke();
+		UpdateCursorPostion();
+	}
+
+	private void UpdateCursorPostion()
+	{
 		Vector2 mousePosition = Mouse.current.position.ReadValue();
 		Ray ray = _camera.ScreenPointToRay(mousePosition);
 
@@ -84,13 +94,13 @@ public class LocalController : MonoBehaviour
 			// The raycast will hit the board mesh, which is a seperate GameObject, so we need to get its parent
 			Board hitBoard = hit.transform.parent.GetComponent<Board>();
 			_currentPosition = hitBoard.GetSquareFromWorldPoint(hit.point);
-			MoveCursorToCurrentPosition();
+			MoveCursorTo(_currentPosition);
 		}
 	}
 
-	private void MoveCursorToCurrentPosition()
+	private void MoveCursorTo(Vector2Int position)
 	{
-		_highlighter.transform.position = _currentBoard.BoardPositionToWorld(_currentPosition);
+		_highlighter.transform.position = _currentBoard.BoardPositionToWorld(position);
 	}
 
 	public void PlaceTile()
