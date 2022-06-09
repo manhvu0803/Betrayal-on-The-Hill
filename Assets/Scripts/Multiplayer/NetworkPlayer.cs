@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NetworkPlayer : NetworkBehaviour
 {
-	[SyncVar(hook = nameof(OnPlayerNameChanged))]
+	[ReadOnlyField, SyncVar(hook = nameof(OnPlayerNameChanged))]
 	public string PlayerName;
 
 	[ReadOnlyField]
@@ -12,8 +12,9 @@ public class NetworkPlayer : NetworkBehaviour
 	[ReadOnlyField, SyncVar] 
 	public Vector2Int Position;
 
+	[SerializeField, ReadOnlyField]
+	private CharaterData CharaterData;
 	
-
 	void Start()
 	{
 		if (this.isLocalPlayer)
@@ -24,20 +25,17 @@ public class NetworkPlayer : NetworkBehaviour
 
 	void SetUpLocalPlayer()
 	{
-		LocalController.Instance.OnSwitchBoard += SwitchBoard;
+		LocalController.Instance.OnSwitchBoard += CmdSwitchBoard;
 	}
 
-	void SwitchBoard(Board board) => CmdSwitchBoard(board.Signature);
-
 	[Command]
-	void CmdSwitchBoard(char boardSignature)
+	void CmdSwitchBoard(Board board)
 	{
-		CurrentBoard = GameManager.Instance.GetBoardBySignature(boardSignature);
-		RpcSwitchBoard(boardSignature);
+		RpcSwitchBoard(board);
 	}
 
 	[ClientRpc]
-	public void RpcSwitchBoard(char boardSignature) => CurrentBoard = GameManager.Instance.GetBoardBySignature(boardSignature);
+	public void RpcSwitchBoard(Board board) => CurrentBoard = board;
 
 	void OnPlayerNameChanged(string oldName, string newName)
 	{
