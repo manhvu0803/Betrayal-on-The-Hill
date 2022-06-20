@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class OmenTile : Tile
 {
-    public override void OnDiscover()
-    {
-        Debug.Log("Draw an Omen");
-    }
+	public override void OnDiscover()
+	{
+	}
 }
