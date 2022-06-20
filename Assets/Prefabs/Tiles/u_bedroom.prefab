@@ -46,17 +46,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <TileName>k__BackingField: Bedroom
-  <IsStartingTile>k__BackingField: 0
   <Texture>k__BackingField: {fileID: 2800000, guid: f807e1ef253f09d43a4cf978c95551da, type: 3}
+  <IsStartingTile>k__BackingField: 0
   <Doors>k__BackingField:
     north: 0
     east: 1
     south: 0
     west: 1
   <Location>k__BackingField:
-    upper: 1
-    ground: 0
-    basement: 0
+    IsUpper: 0
+    IsGround: 0
+    IsBasement: 0
 --- !u!114 &-5153582783389273163
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -63,14 +63,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <TileName>k__BackingField: Ballroom
-  <IsStartingTile>k__BackingField: 0
   <Texture>k__BackingField: {fileID: 2800000, guid: 005ec2ee6d9b2c24296083172d286f8a, type: 3}
+  <IsStartingTile>k__BackingField: 0
   <Doors>k__BackingField:
     north: 1
     east: 1
     south: 1
     west: 1
   <Location>k__BackingField:
-    upper: 0
-    ground: 1
-    basement: 0
+    IsUpper: 0
+    IsGround: 0
+    IsBasement: 0
