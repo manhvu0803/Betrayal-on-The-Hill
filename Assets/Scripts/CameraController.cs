@@ -7,10 +7,10 @@ public class CameraController : MonoBehaviour
 	private Camera _camera;
 
 	[SerializeField]
-	private float _moveDampRatio = 10;
+	private PlayerInput _playerInput;
 
 	[SerializeField]
-	private PlayerInput _playerInput;
+	private float _moveDampRatio = 10;
 
 	private bool _isMoving = false;
 
@@ -29,6 +29,7 @@ public class CameraController : MonoBehaviour
 		actions["zoom"].performed += OnZoom;
 		actions["move"].performed += OnMove;
 		actions["move"].canceled += OnStopMove;
+		actions["MoveCamera"].performed += OnMoveCamera;
 	}
 
 	private void FixedUpdate() 
@@ -44,7 +45,7 @@ public class CameraController : MonoBehaviour
 	public void OnZoom(InputAction.CallbackContext context)
 	{
 		float y = context.ReadValue<float>() / -120;
-		this.transform.Translate(0, y, 0, Space.World);
+		_camera.fieldOfView += y;
 	}
 
 	public void OnMove(InputAction.CallbackContext context)
@@ -56,5 +57,13 @@ public class CameraController : MonoBehaviour
 	public void OnStopMove(InputAction.CallbackContext context)
 	{
 		_isMoving = false;
+	}
+
+	private void OnMoveCamera(InputAction.CallbackContext context)
+	{
+		var delta = context.ReadValue<Vector2>();
+		delta /= -_moveDampRatio;
+		Debug.Log(delta);
+		this.transform.Translate(new Vector3(delta.x, 0, delta.y), Space.World);
 	}
 }
