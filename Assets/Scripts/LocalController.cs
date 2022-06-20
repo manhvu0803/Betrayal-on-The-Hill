@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
-using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerInput))]
 public class LocalController : SingletonBehaviour<LocalController>
@@ -100,7 +99,7 @@ public class LocalController : SingletonBehaviour<LocalController>
 
 	private void MoveCursorTo(Vector2Int position)
 	{
-		_highlighter.transform.position = _currentBoard.BoardPositionToWorld(position);
+		_highlighter.transform.position = _currentBoard.BoardPositionToWorld(position, _highlighter.transform.position.y);
 	}
 
 	public void PlaceTile()

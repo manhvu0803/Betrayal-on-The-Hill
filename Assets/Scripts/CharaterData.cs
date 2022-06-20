@@ -1,16 +1,25 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "My assets/Character data")]
+[CreateAssetMenu(menuName = "Betrayal/Character data")]
 public class CharaterData : ScriptableObject
 {
 	public string Name;
 	
-	[Header("Stats")]
-	public int Speed;
+	[Header("Starting stat level")]
+	public int SpeedLevel;
 	
-	public int Might;
+	public int MightLevel;
 	
-	public int Sanity;
+	public int SanityLevel;
 	
-	public int Knowledge;
+	public int KnowledgeLevel;
+
+	[Header("Stat chart")]
+	public int[] SpeedChart;
+	
+	public int[] MightChart;
+	
+	public int[] SanityChart;
+	
+	public int[] KnowledgeChart;
 }

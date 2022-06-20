@@ -1,5 +1,5 @@
 using System;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
@@ -10,43 +10,26 @@ public class GameManager : SingletonNetBehaviour<GameManager>
     [SerializeField] private TilePool tilePool;
 
     [Header("Game boards")]
-    [SerializeField] private Board groundBoard;
-    [SerializeField] private Board upperBoard;
-    [SerializeField] private Board basementBoard;
+    [SerializeField] 
+    private Board groundBoard;
+    
+    [SerializeField] 
+    private Board upperBoard;
+    
+    [SerializeField] 
+    private Board basementBoard;
 
     [ReadOnlyField, SerializeField] 
-	private NetworkPlayer[] players;
+	private List<NetworkPlayer> players;
 
     private Surrounding _currentSurrounding = null;
 
     public override void OnStartServer()
     {
         base.OnStartServer();
-        //StartCoroutine(SetPlayersStart());
     }
 
     [Server]
-    IEnumerator SetPlayersStart()
-    {
-        // Polling every 2 frames until found all player object
-        // Since the build keep failing to find remote player
-		int playerCount = GameObject.FindObjectOfType<NetworkRoomManager>().numPlayers;
-        do
-        {
-            yield return null;
-            yield return null;
-            players = GameObject.FindObjectsOfType<NetworkPlayer>();
-        }
-        while (players.Length < playerCount);
-
-        foreach (var player in players)
-        {
-            player.CurrentBoard = groundBoard;
-            player.Position = groundBoard.StartPosition;
-        }
-    }
-
-    //[Server]
     public bool RequestTile(Board board, Vector2Int position)
     {
         if (board.TileAt(position) != null)
@@ -89,5 +72,10 @@ public class GameManager : SingletonNetBehaviour<GameManager>
         var newTile = newTileObject.GetComponent<Tile>();
         board.PutNewTile(position, newTile);
         newTile.Initialize(tileMeshPrefab, position);
+    }
+
+    public void RegisterPlayer(NetworkPlayer player)
+    {
+        players.Add(player);
     }
 }

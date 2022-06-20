@@ -17,6 +17,8 @@ public class NetworkPlayer : NetworkBehaviour
 	
 	void Start()
 	{
+		GameManager.Instance.RegisterPlayer(this);
+		
 		if (this.isLocalPlayer)
 		{
 			SetUpLocalPlayer();

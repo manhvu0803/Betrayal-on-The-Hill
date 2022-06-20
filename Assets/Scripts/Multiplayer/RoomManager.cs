@@ -6,7 +6,8 @@ using System;
 public class RoomManager : NetworkRoomManager
 {
 	[Header("Player settings")]
-	[SerializeField] private string playerName;
+	[SerializeField]
+	private string playerName;
 
 	public event Action OnReady;
 	public event Action OnNotReady;
