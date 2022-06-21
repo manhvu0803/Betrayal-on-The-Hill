@@ -48,7 +48,6 @@ sysinfo.txt
 crashlytics-build.properties
 
 /.vscode
-/ProjectSettings/
 /UserSettings/
 
 # Assets
