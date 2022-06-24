@@ -11,13 +11,15 @@ public class Tile : MonoBehaviour
 	[field: SerializeField]
 	public bool IsStartingTile { get; private set; }
 
-	[field: SerializeField] 
-	private Doors Doors { get; set; }
+	public MonoBehaviour script;
+
+	[SerializeField] 
+	private DoorDirections _doors;
 
 	[field: SerializeField]
 	public TileLocation Location { get; private set; }
 
-	public Doors GetDoors() => Doors.AfterRotate((int)transform.rotation.eulerAngles.y);
+	public DoorDirections Doors => _doors.AfterRotate((int)transform.rotation.eulerAngles.y);
 
 	public void Initialize(GameObject meshPrefab, Vector2Int pos)
 	{

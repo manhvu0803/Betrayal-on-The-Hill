@@ -16,5 +16,5 @@ public class UpperBoard : Board
 		tiles[pos.x, pos.y] = landing;
 	}
 
-	public override bool TileChooser(Tile tile) => tile.Location.IsUpper;
+	public override bool TileChooser(Tile tile) => tile.Location.HasFlag(TileLocation.Upper);
 }

@@ -16,5 +16,5 @@ public class BasementBoard : Board
 		tiles[pos.x, pos.y] = landing;
 	}
 
-	public override bool TileChooser(Tile tile) => tile.Location.IsBasement;
+	public override bool TileChooser(Tile tile) => tile.Location.HasFlag(TileLocation.Basement);
 }

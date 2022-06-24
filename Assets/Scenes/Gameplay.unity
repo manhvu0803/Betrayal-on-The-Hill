@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657868, g: 0.49641263, b: 0.57481706, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1388,15 +1388,9 @@ MonoBehaviour:
   <TileName>k__BackingField: Upper Landing
   <Texture>k__BackingField: {fileID: 2800000, guid: 452716f76fa02f94cba0f71e830ecc81, type: 3}
   <IsStartingTile>k__BackingField: 1
-  <Doors>k__BackingField:
-    north: 1
-    east: 1
-    south: 1
-    west: 1
-  <Location>k__BackingField:
-    IsUpper: 0
-    IsGround: 0
-    IsBasement: 0
+  script: {fileID: 0}
+  _doors: 0
+  <Location>k__BackingField: 0
 --- !u!1 &819962065
 GameObject:
   m_ObjectHideFlags: 0
@@ -1659,15 +1653,9 @@ MonoBehaviour:
   <TileName>k__BackingField: Basement Landing
   <Texture>k__BackingField: {fileID: 2800000, guid: 1eba57a3b160c5f4cb9c861204553e3b, type: 3}
   <IsStartingTile>k__BackingField: 1
-  <Doors>k__BackingField:
-    north: 1
-    east: 1
-    south: 1
-    west: 1
-  <Location>k__BackingField:
-    IsUpper: 0
-    IsGround: 0
-    IsBasement: 0
+  script: {fileID: 0}
+  _doors: 0
+  <Location>k__BackingField: 0
 --- !u!1 &1060157903
 GameObject:
   m_ObjectHideFlags: 0
@@ -3127,15 +3115,9 @@ MonoBehaviour:
   <TileName>k__BackingField: Grand Staircase
   <Texture>k__BackingField: {fileID: 0}
   <IsStartingTile>k__BackingField: 1
-  <Doors>k__BackingField:
-    north: 0
-    east: 1
-    south: 0
-    west: 0
-  <Location>k__BackingField:
-    IsUpper: 0
-    IsGround: 0
-    IsBasement: 0
+  script: {fileID: 0}
+  _doors: 2
+  <Location>k__BackingField: 0
 --- !u!4 &3704819605587014920
 Transform:
   m_ObjectHideFlags: 0
@@ -3181,15 +3163,9 @@ MonoBehaviour:
   <TileName>k__BackingField: Foyer
   <Texture>k__BackingField: {fileID: 0}
   <IsStartingTile>k__BackingField: 1
-  <Doors>k__BackingField:
-    north: 1
-    east: 1
-    south: 1
-    west: 1
-  <Location>k__BackingField:
-    IsUpper: 0
-    IsGround: 0
-    IsBasement: 0
+  script: {fileID: 0}
+  _doors: -1
+  <Location>k__BackingField: 2
 --- !u!114 &6483284938759984371
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3205,15 +3181,9 @@ MonoBehaviour:
   <TileName>k__BackingField: Entrance
   <Texture>k__BackingField: {fileID: 0}
   <IsStartingTile>k__BackingField: 1
-  <Doors>k__BackingField:
-    north: 1
-    east: 0
-    south: 1
-    west: 1
-  <Location>k__BackingField:
-    IsUpper: 0
-    IsGround: 0
-    IsBasement: 0
+  script: {fileID: 0}
+  _doors: 13
+  <Location>k__BackingField: 2
 --- !u!1 &7485328233320168215
 GameObject:
   m_ObjectHideFlags: 0

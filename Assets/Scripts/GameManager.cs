@@ -28,7 +28,7 @@ public class GameManager : SingletonNetBehaviour<GameManager>
         base.OnStartServer();
     }
 
-    [Server]
+    //[Server]
     public bool RequestTile(Board board, Vector2Int position)
     {
         if (board.TileAt(position) != null)

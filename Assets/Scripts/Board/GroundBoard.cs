@@ -22,5 +22,5 @@ public class GroundBoard : Board
 		tiles[pos.x - 2, pos.y] = staircase;
     }
 
-	public override bool TileChooser(Tile tile) => tile.Location.IsGround;
+	public override bool TileChooser(Tile tile) => tile.Location.HasFlag(TileLocation.Ground);
 }

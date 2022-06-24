@@ -1,18 +1,9 @@
 using System;
 
-[Serializable]
-public struct TileLocation
+[Serializable, Flags]
+public enum TileLocation
 {
-    public bool IsUpper;
-    public bool IsGround;
-    public bool IsBasement;
-
-    public override string ToString() 
-    {
-        string str = "";
-        str += (IsUpper)? "u" : "";
-        str += (IsGround)? "g" : "";
-        str += (IsBasement)? "b" : "";
-        return str;
-    }
+    Upper = 1,
+    Ground = 2,
+    Basement = 4
 }
