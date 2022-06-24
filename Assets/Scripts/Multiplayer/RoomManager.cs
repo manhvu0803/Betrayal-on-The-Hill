@@ -5,28 +5,20 @@ using System;
 
 public class RoomManager : NetworkRoomManager
 {
-	[Header("Player settings")]
 	[SerializeField]
-	private string playerName;
+	private CharacterData[] _characterList;
 
 	public event Action OnReady;
 	public event Action OnNotReady;
 
-	private new void Start()
-	{
-		playerName = PlayerPrefs.GetString("playerName");
-	}
-
 	public override void OnStartClient()
 	{
 		base.OnStartClient();
-		PlayerPrefs.SetString("playerName", playerName);
 	}
 	
 	public override void OnStartHost()
 	{
 		base.OnStartHost();
-		PlayerPrefs.SetString("playerName", playerName);
 	}
 
 	public override void OnRoomServerPlayersReady()
@@ -47,9 +39,4 @@ public class RoomManager : NetworkRoomManager
 	// }
 	
 	public void OnGameStart() => base.OnRoomServerPlayersReady();
-
-	public void OnPlayerNameChanged(InputField nameField)
-	{
-		playerName = nameField.text;
-	}
 }

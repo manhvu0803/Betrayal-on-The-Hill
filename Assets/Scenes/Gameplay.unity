@@ -155,7 +155,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &28711264
 Transform:
   m_ObjectHideFlags: 0
@@ -1761,7 +1761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: be240a0815832f7419f5ec317ff38a8d, type: 3}
-  m_NotificationBehavior: 2
+  m_NotificationBehavior: 3
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -1827,8 +1827,8 @@ MonoBehaviour:
     m_ActionName: Player/SelectTile[/Mouse/leftButton]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2bc272d2-6a59-4904-96c7-d00c85a2183b
-    m_ActionName: Player/MoveCamera[/Mouse/middleButton,/Mouse/delta]
+    m_ActionId: db68959d-d446-42a6-ba2b-5877b91f4de8
+    m_ActionName: Player/MoveCameraWithPointer[/Mouse/middleButton,/Mouse/delta]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
@@ -2366,7 +2366,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1366769562
 Transform:
   m_ObjectHideFlags: 0

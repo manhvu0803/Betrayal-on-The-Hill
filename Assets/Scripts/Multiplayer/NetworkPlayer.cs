@@ -13,7 +13,7 @@ public class NetworkPlayer : NetworkBehaviour
 	public Vector2Int Position;
 
 	[SerializeField, ReadOnlyField]
-	private CharaterData CharaterData;
+	private CharacterData _character;
 	
 	void Start()
 	{

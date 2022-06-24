@@ -6,7 +6,7 @@
             "id": "5c6d999e-f222-4b27-b302-f386c62f97a3",
             "actions": [
                 {
-                    "name": "Move",
+                    "name": "MoveCameraWithDirectional",
                     "type": "Value",
                     "id": "4c88ad7d-a4ff-4384-a2db-9144b5546a2f",
                     "expectedControlType": "Vector2",
@@ -33,9 +33,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "MoveCamera",
+                    "name": "MoveCameraWithPointer",
                     "type": "Value",
-                    "id": "2bc272d2-6a59-4904-96c7-d00c85a2183b",
+                    "id": "db68959d-d446-42a6-ba2b-5877b91f4de8",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -48,9 +48,9 @@
                     "id": "472bb273-ef70-4a61-8bfb-cca4c3bec6ab",
                     "path": "2DVector(mode=1)",
                     "interactions": "",
-                    "processors": "",
+                    "processors": "NormalizeVector2,ScaleVector2(x=0.25,y=0.25)",
                     "groups": "",
-                    "action": "Move",
+                    "action": "MoveCameraWithDirectional",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -61,7 +61,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "MoveCameraWithDirectional",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -72,7 +72,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "MoveCameraWithDirectional",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -83,7 +83,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "MoveCameraWithDirectional",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -94,7 +94,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Move",
+                    "action": "MoveCameraWithDirectional",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -122,34 +122,34 @@
                 },
                 {
                     "name": "One Modifier",
-                    "id": "e3039579-84e3-40ae-8ca7-7c82c29701e3",
+                    "id": "87893481-2b27-4d79-b37b-f44618267373",
                     "path": "OneModifier",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCamera",
+                    "action": "MoveCameraWithPointer",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
                 {
-                    "name": "Modifier",
-                    "id": "a8317689-c281-4322-b081-d7c60e5847b7",
+                    "name": "modifier",
+                    "id": "e901658c-875f-4c29-bf51-61dd3f740dce",
                     "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "MoveCamera",
+                    "action": "MoveCameraWithPointer",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
                 {
-                    "name": "Binding",
-                    "id": "dd674f96-0e43-4f6d-b88b-3cd3dd99e967",
-                    "path": "<Mouse>/Delta",
+                    "name": "binding",
+                    "id": "75e20624-a083-4f88-8bde-21657dcefbac",
+                    "path": "<Mouse>/delta",
                     "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MoveCamera",
+                    "processors": "NormalizeVector2,ScaleVector2(x=-0.1,y=-0.1)",
+                    "groups": "Keyboard&Mouse",
+                    "action": "MoveCameraWithPointer",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
